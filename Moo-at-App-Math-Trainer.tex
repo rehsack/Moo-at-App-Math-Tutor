@@ -1,0 +1,149 @@
+\documentclass[ngerman,xcolor={table,dvipsnames},smaller,compress,hyperref={bookmarks,colorlinks}]{beamer}
+
+\usepackage{url}
+\usepackage{listings}
+\usepackage[latin9]{inputenc}
+\usepackage{xcolor,textcomp}
+%\usepackage{auto-pst-pdf}
+\usepackage{pstricks}
+\usepackage{pst-node}
+\usepackage{pst-uml}
+\usepackage{tabularx,threeparttable}
+\usepackage{hyperref}
+
+\title{Moo in practice - App::Math::Tutor}
+\author{Jens Rehsack}
+\date{2014}
+
+\usetheme[secheader]{Boadilla}
+\setbeamertemplate{navigation symbols}{}
+
+\newcommand{\perlfilename}[1]{{\color{cyan}{\textit{\begingroup \urlstyle{sf}\Url{#1}}}}}
+\newcommand{\xsfilename}[1]{{\color{olive}{\textit{\begingroup \urlstyle{sf}\Url{#1}}}}}
+\newcommand{\hfilename}[1]{{\color{olive}{\textit{\begingroup \urlstyle{sf}\Url{#1}}}}}
+\newcommand{\cfilename}[1]{{\color{magenta}{\textit{\begingroup \urlstyle{sf}\Url{#1}}}}}
+
+\makeatletter
+\makeatother
+
+%\newcommand{\mypart}[1]{\part{#1}\frame{\partpage \tableofcontents}}
+\newcommand{\mysection}[1]{\section{#1}\frame{\frametitle{Overview}\tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/shaded/shaded]}}
+\newcommand{\mysubsection}[1]{\subsection{#1}\frame{\frametitle{Overview}\tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/shaded/shaded]}}
+\newcommand{\mysubsubsection}[1]{\subsubsection{#1}\frame{\frametitle{Overview}\tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/shaded/shaded]}}
+
+\begin{document}
+
+\psset{angleA=90,angleB=-90}
+\lstset{language=Perl,
+        basicstyle=\ttfamily,
+        keywordstyle=\color{Maroon},
+        commentstyle=\color{Blue}, 
+        stringstyle=\color{Green},
+        showstringspaces=false}
+
+%\AtBeginSection[]{\begin{frame}<beamer> \frametitle{Overview} \tableofcontents[current, currentsubsection] \end{frame}}
+%\AtBeginSubsection[]{\begin{frame}<beamer> \frametitle{Overview} \tableofcontents[current, currentsubsection] \end{frame}}
+\AtBeginPart{\begin{frame}<beamer> \frametitle{Overview} \partpage \tableofcontents[current] \end{frame}}
+
+\frame{\maketitle}
+
+\part{Introduction}
+
+\section{Introduction}
+
+\begin{frame}[fragile]
+\frametitle{Audience}
+\begin{block}<1->{Audience}
+\begin{itemize}
+\item Developer who wants to create or improve Perl5 software
+\item Developer who wants to learn how to develop modern OO with Perl5
+\item Developer who're interested in developing mathematical exercises
+\end{itemize}
+\end{block}
+
+\begin{block}<2->{Prerequisites of the Audience}
+Following knowledge is expected:
+\begin{itemize}
+\item General knowledge about object oriented programming or concepts
+      \begin{itemize}
+      \item methods
+      \item attributes
+      \item classes
+      \item objects
+      \item inheritance
+      \item roles
+      \end{itemize}
+\item slightly above basic Perl experience
+\uncover<3->{\item ever heard of Smalltalk and it's OO-concept is a strong bonus}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+
+\begin{block}<1->{Moo and App::Math::Tutor}
+\begin{itemize}
+\item real world examples over far-fetched conceptuals
+\item MooX::Cmd, MooX::Options and MooX::ConfigFromFile provide way more features and flexibility than either
+      \begin{itemize}
+      \item App::Cmd with Getopt::Long::Descriptive
+      \item MooseX::App::Cmd along with corresponding MooseX warppers around related stuff
+      \end{itemize}
+\item $ 2^{nd} $ generation of modern OO
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\part{Moo basics}
+
+\section{Attributes}
+
+\part{Finish}
+
+% RESOURCES
+\begin{frame}[fragile]
+\frametitle{Resources}
+\begin{block}<1->{Software}
+\url{http://www.i-scream.org/libstatgrab/} \\
+\url{http://search.cpan.org/dist/Unix-Statgrab/} \\
+\url{https://metacpan.org/module/Unix::Statgrab}
+\end{block}
+
+\begin{block}<2->{Mailing List}
+\url{https://lists.i-scream.org/pipermail/users/} \\
+\url{users@i-scream.org}
+\end{block}
+
+\begin{block}<3->{IRC}
+\url{irc://irc.freenode.net/#libstatgrab}
+\end{block}
+\end{frame}
+
+% THANKS
+\begin{frame}[fragile]
+\frametitle{Thank You}
+\begin{block}<1->{Thank you}
+\begin{itemize}
+\uncover<2->{\item Tim Bishop for caring for high quality release}
+\uncover<3->{\item H. Merijn Brand for doing additional tests on more exotic platforms}
+\uncover<4->{\item Reini Urban for proving on commodity hardware for being sane}
+\end{itemize}
+\end{block}
+\begin{block}<5->{Questions?}
+Jens Rehsack \textless{}\href{mailto:rehsack@cpan.org}{rehsack@cpan.org}\textgreater{}
+\end{block}
+\end{frame}
+
+%\begin{frame}[fragile]
+%\frametitle{}
+%\begin{block}<1->{}
+%\begin{itemize}
+%\item 
+%\end{itemize}
+%\end{block}
+%\end{frame}
+
+\end{document}
+
