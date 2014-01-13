@@ -435,6 +435,79 @@ around "_guess_natural_number" => sub {
 
 \end{frame}
 
+%\resizebox{skalierungsfaktor\textwidth}{!}{\includegraphics*{dateiname}}
+
+\begin{frame}[fragile]
+
+\begin{block}<1->{Derived Exercise design}
+\resizebox{\textwidth}{!}{
+\begin{pspicture}(16,10)%\psgrid
+\scriptsize
+ \rput(12,9){\rnode{A}{%
+  \umlClass{App::Math::Tutor::Cmd::Roman::Cmd::Add}{\hline
+ \_build\_exercise() : exercise
+ }}}
+ \rput(12,6){\rnode{B}{%
+  \umlClass{App::Math::Tutor::Role::NaturalExercise}{
+  format\\\hline
+  \\\hline
+ }}}
+ \rput(4,3.5){\rnode{C}{%
+  \umlClass{App::Math::Tutor::Role::Roman}{\hline
+ around => \_guess\_natural\_number() : Roman \\
+ }}}
+ \rput(4,1){\rnode{D}{%
+  \umlClass{App::Math::Tutor::Role::Natural}{\hline
+ \_check\_natural\_number() : bool \\
+ \_guess\_natural\_number() : Natural \\
+ get\_natural\_number() : [ Natural ]
+ }}}
+ \rput(4,9){\rnode{E}{%
+  \umlClass{RomanNum}{
+  \hline
+  \_stringify() : Str \\
+ }}}
+ \rput(4,6){\rnode{F}{%
+  \umlClass{Natural}{
+  value\\
+  \hline
+  \_stringify() : Str \\
+  \_numify() : Num \\
+  \_num\_compare() : Int \\
+ }}}
+ \rput(12,2){\rnode{G}{%
+  \umlClass{App::Math::Tutor::Role::Exercise}{
+  exercise : lazy \\
+  \# \{ section, caption, label, \\
+  \#    header, challenges, solutions \}\\
+  output\_name : lazy\\
+  template\_filename : lazy\\
+  \hline
+  \_build\_exercise() = 0 : exercise\\
+  \_build\_output\_name() : Str\\
+  \_build\_template\_filename() = 0 : Str\\
+  execute()
+ }}}
+\end{pspicture}
+\ncN{B}{A} % App::Math::Tutor::Cmd::Roman::Cmd::Add -> App::Math::Tutor::Role::NaturalExercise
+\ncputicon[npos=0]{umlV}
+\ncEXN{D}{B} % App::Math::Tutor::Role::NaturalExercise -> App::Math::Tutor::Role::Natural
+\ncputicon[npos=0]{umlV}
+\ncN{G}{B} % App::Math::Tutor::Role::NaturalExercise -> App::Math::Tutor::Role::Exercise
+\ncputicon[npos=0]{umlV}
+\ncE{F}{B}
+\ncputicon[npos=0]{umlAgreg}
+\ncline[linestyle=dashed,linecolor=blue]{E}{A}
+\ncN[linecolor=blue]{D}{C} % App::Math::Tutor::Role::Roman -> App::Math::Tutor::Role::Natural
+\ncputicon[npos=0,linecolor=blue]{umlV}
+\ncEVE[linecolor=blue]{C}{A} % App::Math::Tutor::Cmd::Roman::Cmd::Add -> App::Math::Tutor::Role::Roman
+\ncputicon[npos=0,linecolor=blue]{umlV}
+\ncN[linecolor=blue]{F}{E} % RomanNum -> Natural
+\ncputicon[npos=0,linecolor=blue]{umlV}
+} % end of resizebox
+\end{block}
+
+\end{frame}
 
 %\begin{frame}[fragile]
 
