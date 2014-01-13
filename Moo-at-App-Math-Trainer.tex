@@ -143,15 +143,15 @@ has denom(*@\pnode(0,0){C}{}@*)inator => ( is => "(*@\pnode(0,0){E}{}@*)ro", req
 \begin{description}
 \item[is] \textbf{required} behavior description
     \begin{description}
-    \item[ro] defines the attribute is read only
-    \item[rw] defined the attribute is read-/writable
-    \item[lazy] defines the attribute is read only with a lazy initialization
-    \item[rwp] defines the attribute being read only for public and read-/writable for private use
+    \uncover<2->{\item[ro] defines the attribute is read only}
+    \uncover<3->{\item[rw] defined the attribute is read-/writable}
+    \uncover<4->{\item[lazy] defines the attribute is read only with a lazy initialization}
+    \uncover<5->{\item[rwp] defines the attribute being read only for public and read-/writable for private use}
     \end{description}
-\item[required] when set to a true value, attribute must be passed on instantiation
-\item[isa] defines a subroutine (\texttt{coderef}) which is called to validate values to set
-\item[coerce] defines a subrouting (\texttt{coderef}) which forces attribute values
-\item[handles] defines a \textbf{role} or subroutines (\texttt{coderef}) this attribute handles
+\uncover<6->{\item[required] when set to a true value, attribute must be passed on instantiation}
+\uncover<7->{\item[isa] defines a subroutine (\texttt{coderef}) which is called to validate values to set}
+\uncover<8->{\item[coerce] defines a subrouting (\texttt{coderef}) which forces attribute values}
+\uncover<9->{\item[handles] defines a \textbf{role} or subroutines (\texttt{coderef}) this attribute handles}
 \end{description}
 \end{block}
 
@@ -162,12 +162,12 @@ has denom(*@\pnode(0,0){C}{}@*)inator => ( is => "(*@\pnode(0,0){E}{}@*)ro", req
 \begin{block}<1->{Attribute options II}
 \begin{description}
 \item[trigger] takes a subroutine (\texttt{coderef}) which called anytime the attribute is set \\
-    \textbf{special}: the value of $ 1 $ means to generate a (\texttt{coderef}) which calles the method \texttt{\_trigger\_\$\{attr\_name\}} (This is called \textit{attribute shortcut})
-\item[default] subroutine (\texttt{coderef}) which is called to initialize an attribute
-\item[predicate] takes a method name (\texttt{string}) which will return true if an attribute has a value (supports \textit{attribute shortcut})
-\item[builder] takes a method name (\texttt{string}) which is called to initialize an attribute (supports \textit{attribute shortcut})
-\item[clearer] takes a method name (\texttt{string}) which will clear the attribute (supports \textit{attribute shortcut})
-\item[lazy] takes a bool value which delays attribute initialization to first time it's grabbed when \texttt{true}
+    \uncover<2->{\textbf{special}: the value of $ 1 $ means to generate a (\texttt{coderef}) which calles the method \texttt{\_trigger\_\$\{attr\_name\}} (This is called \textit{attribute shortcut})}
+\uncover<3->{\item[default] subroutine (\texttt{coderef}) which is called to initialize an attribute}
+\uncover<4->{\item[predicate] takes a method name (\texttt{string}) which will return true if an attribute has a value (supports \textit{attribute shortcut})}
+\uncover<5->{\item[builder] takes a method name (\texttt{string}) which is called to initialize an attribute (supports \textit{attribute shortcut})}
+\uncover<6->{\item[clearer] takes a method name (\texttt{string}) which will clear the attribute (supports \textit{attribute shortcut})}
+\uncover<7->{\item[lazy] takes a bool value which delays attribute initialization to first time it's grabbed when \texttt{true}}
 \end{description}
 \end{block}
 
@@ -178,10 +178,10 @@ has denom(*@\pnode(0,0){C}{}@*)inator => ( is => "(*@\pnode(0,0){E}{}@*)ro", req
 \begin{block}<1->{Attribute options III}
 \begin{description}
 \item[reader] takes a method name for another than default getter name (\texttt{\_get\_\$\{attr\_name\}} instead of \texttt{\$\{attr\_name\}} to get some Java smell)
-\item[writer]  takes a method name for another than default setter name (\texttt{\_set\_\$\{attr\_name\}} instead of \texttt{\$\{attr\_name\}} to get some C++ smell)
-\item[weak\_ref] should be set to a true value when circular references are possible by attribute value (to avoid leaks)
-\item[init\_arg] Takes the name of the key to look for at instantiation time of the object. A common use of this is to make an underscored attribute have a non-underscored initialization name. undef means that passing the value in on instantiation is ignored.
-\item[moosify] Takes either a coderef or array of coderefs which is meant to transform the given attributes specifications if necessary when upgrading to a Moose role or class. You shouldn't need this by default, but is provided as a means of possible extensibility.
+\uncover<2->{\item[writer]  takes a method name for another than default setter name (\texttt{\_set\_\$\{attr\_name\}} instead of \texttt{\$\{attr\_name\}} to get some C++ smell)}
+\uncover<3->{\item[weak\_ref] should be set to a true value when circular references are possible by attribute value (to avoid leaks)}
+\uncover<4->{\item[init\_arg] Takes the name of the key to look for at instantiation time of the object. A common use of this is to make an underscored attribute have a non-underscored initialization name. undef means that passing the value in on instantiation is ignored.}
+\uncover<5->{\item[moosify] Takes either a coderef or array of coderefs which is meant to transform the given attributes specifications if necessary when upgrading to a Moose role or class. You shouldn't need this by default, but is provided as a means of possible extensibility.}
 \end{description}
 \end{block}
 
@@ -313,7 +313,7 @@ with "App::Math::Tutor::Role::Natural";
 
 { package RomanNumber;
   use Moo;
-  extends "NaturalNumer"; # derives overloading!
+  extends "NaturalNumber"; # derives overloading!
   sub _stringify { ... } }
 
 around "_guess_natural_number" => sub {
@@ -443,11 +443,11 @@ around "_guess_natural_number" => sub {
 \resizebox{\textwidth}{!}{
 \begin{pspicture}(16,10)%\psgrid
 \scriptsize
- \rput(12,9){\rnode{A}{%
+ \rput(13,9){\rnode{A}{%
   \umlClass{App::Math::Tutor::Cmd::Roman::Cmd::Add}{\hline
  \_build\_exercise() : exercise
  }}}
- \rput(12,6){\rnode{B}{%
+ \rput(13,6){\rnode{B}{%
   \umlClass{App::Math::Tutor::Role::NaturalExercise}{
   format\\\hline
   \\\hline
@@ -475,7 +475,7 @@ around "_guess_natural_number" => sub {
   \_numify() : Num \\
   \_num\_compare() : Int \\
  }}}
- \rput(12,2){\rnode{G}{%
+ \rput(13,2){\rnode{G}{%
   \umlClass{App::Math::Tutor::Role::Exercise}{
   exercise : lazy \\
   \# \{ section, caption, label, \\
@@ -508,6 +508,47 @@ around "_guess_natural_number" => sub {
 \end{block}
 
 \end{frame}
+
+\begin{frame}[t,fragile]
+
+\begin{block}<1->{Improving design}
+\begin{itemize}
+\item introduce factories
+\uncover<2->{\item add lazy factory attribute \uncover<3->{(allowes overriding factory to use by \texttt{around}'ing builder)}}
+\uncover<4->{\item separate \texttt{number} classes (type system, but \textbf{no} \texttt{MooseX::Types})}
+\uncover<5->{\item approval for reasonable exercise value should be part of factory}
+\uncover<6->{\item approval for valid number should be \texttt{coerce}d (\texttt{trigger}?)}
+\end{itemize}
+\end{block}
+
+\begin{block}<7->{Design history}
+\begin{itemize}
+\item I started with just vulgar fraction exercises
+\uncover<8->{\item Design covered exactly those needs}
+\end{itemize}
+\end{block}
+
+\begin{block}<9->{Design futury}
+\begin{itemize}
+\item Modern Perl-OO allowes easy refactoring to apply above improvements
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\section{conclusion}
+
+\begin{frame}[fragile]
+
+\begin{block}<1->{Conclusion}
+\begin{itemize}
+\item lazy attributes allow designing a multi-stage initialization phase
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+
 
 %\begin{frame}[fragile]
 
