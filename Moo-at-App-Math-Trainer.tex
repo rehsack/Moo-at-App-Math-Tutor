@@ -239,31 +239,38 @@ sub _stringify {
 
 \onslide<2->{
 \begin{itemize}
-\item nothing like \texttt{MooseXX:Declare} - pure Perl5 keywords are enough for plain methods
+\item nothing like \texttt{MooseX::Declare} - pure Perl5 keywords are enough for plain methods
 \end{itemize}
 }
 
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[t,fragile]
 
 \begin{block}<1->{Method Modifiers}
+Method modifiers are a convenient feature from the CLOS (Common Lisp Object System) world:
 \begin{description}
-\item[before] \texttt{before method(s) => sub \{ \ldots \}} \\
-before is called before the method it is modifying. Its return value is totally ignored.
-\item[after] \texttt{after method(s) => sub \{ \ldots \}} \\
-after is called after the method it is modifying. Its return value is totally ignored.
-\item[around] \texttt{around method(s) => sub \{ \ldots \}} \\
-around is called instead of the method it is modifying. The method you're overriding is passed as \texttt{coderef} in the first argument.
+\uncover<2->{\item[before] \texttt{before method(s) => sub \{ \ldots \}} \\
+before is called before the method it is modifying. Its return value is totally ignored.}
+\uncover<3->{\item[after] \texttt{after method(s) => sub \{ \ldots \}} \\
+after is called after the method it is modifying. Its return value is totally ignored.}
+\uncover<4->{\item[around] \texttt{around method(s) => sub \{ \ldots \}} \\
+around is called instead of the method it is modifying. The method you're overriding is passed as \texttt{coderef} in the first argument.}
 \end{description}
 \end{block}
 
+\end{frame}
+
+\begin{frame}[t,fragile]
+
+\begin{block}<1->{Method Modifiers - Advantages}
 \begin{itemize}
-\uncover<2->{\item supersedes \texttt{\$self->SUPER::foo(@\_)} syntax}
-\uncover<3->{\item allows multiple modifiers in single namespace}
-\uncover<4->{\item cleaner interface than SUPER}
-\uncover<5->{\item ensures that inherited methods invocation happens right (mostly - remember around)}
+\item supersedes \texttt{\$self->SUPER::foo(@\_)} syntax
+\uncover<2->{\item allows multiple modifiers in single namespace}
+\uncover<3->{\item cleaner interface than SUPER}
+\uncover<4->{\item ensures that inherited methods invocation happens right (mostly - remember around)}
 \end{itemize}
+\end{block}
 
 \end{frame}
 
@@ -293,9 +300,9 @@ around "_guess_natural_number" => sub {
 \end{block}
 
 \begin{itemize}
-\item captures control
-\item receives responsibility
-\item runtime of modified method completely eliminated
+\uncover<2->{\item captures control}
+\uncover<3->{\item receives responsibility}
+\uncover<4->{\item runtime of modified method completely eliminated}
 \end{itemize}
 
 \end{frame}
@@ -325,9 +332,9 @@ around "_guess_natural_number" => sub {
 \end{block}
 
 \begin{itemize}
-\item modifies only required part
-\item leaves most responsibility in modified method
-\item runtime of modified method added to this method's runtime
+\uncover<2->{\item modifies only required part}
+\uncover<3->{\item leaves most responsibility in modified method}
+\uncover<4->{\item runtime of modified method added to this method's runtime}
 \end{itemize}
 
 \end{frame}
