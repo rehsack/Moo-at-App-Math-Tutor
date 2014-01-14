@@ -5,6 +5,7 @@
 \usepackage[latin9]{inputenc}
 \usepackage{xcolor,textcomp}
 %\usepackage{auto-pst-pdf}
+\usepackage{graphicx}
 \usepackage{pstricks}
 \usepackage{pst-node}
 \usepackage{pst-uml}
@@ -189,15 +190,17 @@ has denom(*@\pnode(0,0){C}{}@*)inator => ( is => "(*@\pnode(0,0){E}{}@*)ro", req
 
 \section{Methods}
 
-\begin{frame}[fragile]
+\begin{frame}[t,fragile]
 
-\begin{block}<1->{Methods in Moo I}
+\begin{columns}[t]
+\begin{column}{.8\textwidth}
+\begin{block}{Methods in Moo I}
 \scriptsize
 \begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
 package VulgarFraction;
 
 use Moo;
-use overload "''" => "_stringify",
+use overload "''" => "_stringify(*@\pnode(0,0){A}{}@*)",
              "0+" => "_numify",
              "<>" => "_num_compare",
              "bool" => sub { 1 };
@@ -214,7 +217,17 @@ sub _numify { $_[0]->numerator / $_[0]->denominator; }
 ...
 \end{lstlisting}
 \end{block}
+\end{column}
 
+\begin{column}{.18\textwidth}
+\uncover<2->{\begin{figure}[ht]
+\rnode{a}{\includegraphics[width=\textwidth]{getStringFromObj.eps}}
+\caption{\small{For Wendy \& Java developers - what does operator overloading mean?}}
+\end{figure}}
+\end{column}
+\end{columns}
+
+\uncover<2->{\nccurve[linecolor=red]{->}{A}{a}}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -256,6 +269,7 @@ before is called before the method it is modifying. Its return value is totally 
 after is called after the method it is modifying. Its return value is totally ignored.}
 \uncover<4->{\item[around] \texttt{around method(s) => sub \{ \ldots \}} \\
 around is called instead of the method it is modifying. The method you're overriding is passed as \texttt{coderef} in the first argument.}
+\uncover<5->{\item[-] No support for \texttt{super}, \texttt{override}, \texttt{inner} or \texttt{augment}}
 \end{description}
 \end{block}
 
@@ -266,8 +280,8 @@ around is called instead of the method it is modifying. The method you're overri
 \begin{block}<1->{Method Modifiers - Advantages}
 \begin{itemize}
 \item supersedes \texttt{\$self->SUPER::foo(@\_)} syntax
-\uncover<2->{\item allows multiple modifiers in single namespace}
-\uncover<3->{\item cleaner interface than SUPER}
+\uncover<2->{\item cleaner interface than SUPER}
+\uncover<3->{\item allows multiple modifiers in single namespace}
 \uncover<4->{\item ensures that inherited methods invocation happens right (mostly - remember around)}
 \end{itemize}
 \end{block}
