@@ -396,6 +396,8 @@ around "_guess_natural_number" => sub {
 
 \end{frame}
 
+\section{Design}
+
 \begin{frame}[fragile]
 
 \begin{block}<1->{Typical Exercise design}
@@ -455,8 +457,6 @@ around "_guess_natural_number" => sub {
 \end{block}
 
 \end{frame}
-
-%\resizebox{skalierungsfaktor\textwidth}{!}{\includegraphics*{dateiname}}
 
 \begin{frame}[fragile]
 
@@ -530,6 +530,8 @@ around "_guess_natural_number" => sub {
 
 \end{frame}
 
+\section{Improvements}
+
 \begin{frame}[t,fragile]
 
 \begin{block}<1->{Improving design}
@@ -557,13 +559,55 @@ around "_guess_natural_number" => sub {
 
 \end{frame}
 
-\section{conclusion}
+\part{Moo eXtensions for CLI}
 
-\begin{frame}[fragile]
+\section{MooX in general}
+
+\begin{frame}[t,fragile]
+\frametitle{MooX in general}
+
+Some Moo extensions for getting a picture - the list is neither complete nor is it intended to be
+
+\begin{block}<1->{MooX Distributions}
+\begin{description}
+\item[MooX::Log::Any] logging role building a very lightweight wrapper to Log::Any
+\uncover<2->{\item[MooX::Validate] minimalist Data Validation for Moo}
+\uncover<3->{\item[MooX::Types::MooseLike] Moose like types for Moo}
+\uncover<4->{\item[MooX::Override] adds "override method =\textgreater{} sub {\ldots}" support to Moo}
+\uncover<5->{\item[MooX::Augment] adds "augment method =\textgreater{} sub {\ldots}" support to Moo}
+\uncover<6->{\item[MooX::late] easily translate Moose code to Moo}
+\uncover<7->{\item[MooX::PrivateAttributes] create attribute only usable inside your package}
+\uncover<8->{\item[MooX::Singleton] turn your Moo class into singleton}
+\uncover<9->{\item[MooX::Aliases] easy aliasing of methods and attributes in Moo}
+\end{description}
+\end{block}
+
+\end{frame}
+
+\section{MooX for CLI}
+
+\begin{frame}[t,fragile]
+
+\begin{block}<1->{MooX Distributions for CLI}
+\begin{description}
+\item[MooX::Cmd] giving an easy Moo style way to make command organized CLI apps
+\uncover<2->{\item[MooX::Options] explicit Options eXtension for Object Class}
+\uncover<3->{\item[MooX::ConfigFromFile] Moo eXtension for initializing objects from config file}
+\end{description}
+\end{block}
+
+\end{frame}
+
+\part{Conclusion}
+
+\section{Conclusion}
+
+\begin{frame}[t,fragile]
 
 \begin{block}<1->{Conclusion}
 \begin{itemize}
 \item lazy attributes allow designing a multi-stage initialization phase
+\uncover<2->{\item Roles allow behavioral design over duck typing}
 \end{itemize}
 \end{block}
 
@@ -571,7 +615,7 @@ around "_guess_natural_number" => sub {
 
 
 
-%\begin{frame}[fragile]
+%\begin{frame}[t,fragile]
 
 %\begin{block}<n->{}
 %\begin{itemize}
@@ -584,47 +628,29 @@ around "_guess_natural_number" => sub {
 \part{Finish}
 
 % RESOURCES
-\begin{frame}[fragile]
+\begin{frame}[t,fragile]
 \frametitle{Resources}
 \begin{block}<1->{Software}
-\url{http://www.i-scream.org/libstatgrab/} \\
-\url{http://search.cpan.org/dist/Unix-Statgrab/} \\
-\url{https://metacpan.org/module/Unix::Statgrab}
+\url{https://metacpan.org/pod/Moo/} \\
+\url{https://github.com/moose/Moo} \\
+\url{https://metacpan.org/search?q=MooX} \\
+\url{https://metacpan.org/pod/MooX::Cmd} \\
+\url{https://metacpan.org/pod/MooX::Options} \\
+\url{https://metacpan.org/pod/MooX::ConfigFromFile}
 \end{block}
 
-\begin{block}<2->{Mailing List}
-\url{https://lists.i-scream.org/pipermail/users/} \\
-\url{users@i-scream.org}
-\end{block}
-
-\begin{block}<3->{IRC}
-\url{irc://irc.freenode.net/#libstatgrab}
+\begin{block}<2->{IRC}
+\url{irc://irc.perl.org/#moose} \\
+\url{irc://irc.perl.org/#web-simple}
 \end{block}
 \end{frame}
 
 % THANKS
 \begin{frame}[fragile]
 \frametitle{Thank You}
-\begin{block}<1->{Thank you}
-\begin{itemize}
-\uncover<2->{\item Tim Bishop for caring for high quality release}
-\uncover<3->{\item H. Merijn Brand for doing additional tests on more exotic platforms}
-\uncover<4->{\item Reini Urban for proving on commodity hardware for being sane}
-\end{itemize}
-\end{block}
-\begin{block}<5->{Questions?}
+\begin{block}<1->{Questions?}
 Jens Rehsack \textless{}\href{mailto:rehsack@cpan.org}{rehsack@cpan.org}\textgreater{}
 \end{block}
 \end{frame}
 
-%\begin{frame}[fragile]
-%\frametitle{}
-%\begin{block}<1->{}
-%\begin{itemize}
-%\item 
-%\end{itemize}
-%\end{block}
-%\end{frame}
-
 \end{document}
-
