@@ -587,16 +587,32 @@ Some Moo extensions for getting a picture - the list is neither complete nor is 
 \section{MooX for CLI}
 
 \begin{frame}[t,fragile]
+\frametitle{MooX Distributions for CLI}
 
-\begin{block}<1->{MooX Distributions for CLI}
-\begin{description}
-\item[MooX::Cmd] giving an easy Moo style way to make command organized CLI apps
-\uncover<2->{\item[MooX::Options] explicit Options eXtension for Object Class}
-\uncover<3->{\item[MooX::ConfigFromFile] Moo eXtension for initializing objects from config file}
-\end{description}
+\begin{block}<1->{MooX::Cmd}
+\begin{itemize}
+\item giving an easy Moo style way to make command organized CLI apps
+\item support sub-commands with separated options when used together with MooX::Options
+\end{itemize}
+\end{block}
+
+\begin{block}<2->{MooX::Options}
+\begin{itemize}
+\item explicit Options eXtension for Object Class
+\item no mess with composed attributes
+\end{itemize}
+\end{block}
+
+\begin{block}<3->{MooX::ConfigFromFile}
+\begin{itemize}
+\item Moo eXtension for initializing objects from config file
+\item RC files with structures (JSON, INI, YAML, XML, ...)
+\end{itemize}
 \end{block}
 
 \end{frame}
+
+
 
 \part{Conclusion}
 
