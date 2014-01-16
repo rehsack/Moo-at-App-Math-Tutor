@@ -765,8 +765,7 @@ Some Moo extensions for getting a picture - the list is neither complete nor is 
 
 \end{frame}
 
-
-\part{Conclusion}
+\part{Finish}
 
 \section{Conclusion}
 
@@ -775,13 +774,22 @@ Some Moo extensions for getting a picture - the list is neither complete nor is 
 \begin{block}<1->{Conclusion}
 \begin{itemize}
 \item lazy attributes allow designing a multi-stage initialization phase
-\uncover<2->{\item Roles allow behavioral design over duck typing}
+\uncover<2->{\item benefit of common rumtime (faster load) when using}
+\uncover<3->{
+\begin{itemize}
+\item DBIx::Class
+\item Web::Simple (Jedi)
+\end{itemize}}
+\uncover<4->{\item improve design by}
+\begin{itemize}
+\uncover<5->{\item using roles for behavioral design (avoid duck typing)}
+\uncover<6->{\item using explicit patterns for clear separation of concerns}
+\uncover<6->{\item express intensions clearer for method overloading by using \textit{method modifiers}}
+\end{itemize}
 \end{itemize}
 \end{block}
 
 \end{frame}
-
-
 
 %\begin{frame}[t,fragile]
 
@@ -793,7 +801,7 @@ Some Moo extensions for getting a picture - the list is neither complete nor is 
 
 %\end{frame}
 
-\part{Finish}
+\section{Resources}
 
 % RESOURCES
 \begin{frame}[t,fragile]
@@ -804,7 +812,8 @@ Some Moo extensions for getting a picture - the list is neither complete nor is 
 \url{https://metacpan.org/search?q=MooX} \\
 \url{https://metacpan.org/pod/MooX::Cmd} \\
 \url{https://metacpan.org/pod/MooX::Options} \\
-\url{https://metacpan.org/pod/MooX::ConfigFromFile}
+\url{https://metacpan.org/pod/MooX::ConfigFromFile} \\
+\url{https://github.com/rehsack/App-Math-Tutor}
 \end{block}
 
 \begin{block}<2->{IRC}
@@ -815,7 +824,7 @@ Some Moo extensions for getting a picture - the list is neither complete nor is 
 
 % THANKS
 \begin{frame}[fragile]
-\frametitle{Thank You}
+\frametitle{Thank You For Listening}
 \begin{block}<1->{Questions?}
 Jens Rehsack \textless{}\href{mailto:rehsack@cpan.org}{rehsack@cpan.org}\textgreater{}
 \end{block}
