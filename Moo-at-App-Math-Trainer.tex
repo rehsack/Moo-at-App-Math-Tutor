@@ -53,6 +53,7 @@
 
 \section{Introduction}
 
+\small
 \begin{frame}[fragile]
 \frametitle{Audience}
 \begin{block}<1->{Audience}
@@ -66,17 +67,18 @@
 \begin{block}<2->{Prerequisites of the Audience}
 Following knowledge is expected:
 \begin{itemize}
-\item General knowledge about object oriented programming or concepts
+\item General knowledge about object oriented programming or concepts like
       \begin{itemize}
       \item methods
       \item attributes
       \item classes
       \item objects
+      \item polymorphism
       \item inheritance
       \item roles
       \end{itemize}
 \item slightly above basic Perl experience
-\uncover<3->{\item ever heard of Smalltalk and it's OO-concept is a strong bonus}
+\uncover<3->{\item ever heard of Smalltalk and its OO-concept is a strong bonus}
 \end{itemize}
 \end{block}
 \end{frame}
@@ -115,9 +117,9 @@ Following knowledge is expected:
 
 \begin{block}<1->{Attributes in Moo}
 \begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
-package VulgarFraction;
+package VulFrac;
 
-use Moo::Role;
+use Moo;
 
 has(*@\pnode(0,0){A}{}@*) nume(*@\pnode(0,0){B}{}@*)rator => ( is => "(*@\pnode(0,0){D}{}@*)ro", (*@\pnode(0,0){F}{}@*)required => 1 );
 has denom(*@\pnode(0,0){C}{}@*)inator => ( is => "(*@\pnode(0,0){E}{}@*)ro", required => (*@\pnode(0,0){G}{}@*)1 );
@@ -152,7 +154,7 @@ has denom(*@\pnode(0,0){C}{}@*)inator => ( is => "(*@\pnode(0,0){E}{}@*)ro", req
 \uncover<6->{\item[required] when set to a true value, attribute must be passed on instantiation}
 \uncover<7->{\item[isa] defines a subroutine (\texttt{coderef}) which is called to validate values to set}
 \uncover<8->{\item[coerce] defines a subrouting (\texttt{coderef}) which forces attribute values}
-\uncover<9->{\item[handles] defines a \textbf{role} or subroutines (\texttt{coderef}) this attribute handles}
+\uncover<9->{\item[handles] defines a \textbf{role} or methods to dispatch to the attribute}
 \end{description}
 \end{block}
 
@@ -197,17 +199,17 @@ has denom(*@\pnode(0,0){C}{}@*)inator => ( is => "(*@\pnode(0,0){E}{}@*)ro", req
 \begin{block}{Methods in Moo I}
 \scriptsize
 \begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
-package VulgarFraction;
+package VulFrac;
 
 use Moo;
-use overload "''" => "_stringify(*@\pnode(0,0){A}{}@*)",
-             "0+" => "_numify",
-             "<>" => "_num_compare",
-             "bool" => sub { 1 };
+use overload '""'   => "_stringify(*@\pnode(0,0){A}{}@*)",
+             '0+'   => "_numify",
+             'bool' => sub { 1 },
+             '<=>'  => "_num_compare";
 
 has numerator => ( is => "ro", required => 1 );
 has denominator => ( is => "ro", required => 1,
-  isa => quote_sub(q{$_[0] != 0 or die "Not != 0"}) );
+  isa => sub { $_[0] != 0 or die "Not != 0" };
 
 sub _stringify { my $self = shift;
   return sprintf("\\frac{%s}{%s}",
@@ -239,7 +241,7 @@ package Rationale;
 
 use Moo;
 
-extends "VulgarFraction";
+extends "VulFrac";
 
 has digits => ( is => "ro", required => 1 );
 
@@ -282,7 +284,8 @@ around is called instead of the method it is modifying. The method you're overri
 \item supersedes \texttt{\$self->SUPER::foo(@\_)} syntax
 \uncover<2->{\item cleaner interface than SUPER}
 \uncover<3->{\item allows multiple modifiers in single namespace}
-\uncover<4->{\item ensures that inherited methods invocation happens right (mostly - remember around)}
+\uncover<4->{\item also possible from within roles and not restricted to inheritance}
+\uncover<5->{\item ensures that inherited methods invocation happens right (mostly - remember around)}
 \end{itemize}
 \end{block}
 
@@ -293,15 +296,15 @@ around is called instead of the method it is modifying. The method you're overri
 \begin{block}<1->{Methods Modifiers - around avoid calling \texttt{\$orig}}
 \scriptsize
 \begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
-package RomanExercise;
+package App::Math::Tutor::Role::Roman;
 
 use Moo::Role;
 
 with "App::Math::Tutor::Role::Natural";
 
-{ package RomanNumber;
+{ package RomanNum;
   use Moo;
-  extends "NaturalNumer"; # derives overloading!
+  extends "NatNum"; # derives overloading!
   sub _stringify { ... } }
 
 around "_guess_natural_number" => sub {
@@ -326,15 +329,15 @@ around "_guess_natural_number" => sub {
 \begin{block}<1->{Methods Modifiers - around modifying \texttt{\$orig} return value}
 \scriptsize
 \begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
-package RomanExercise;
+package App::Math::Tutor::Role::Roman;
 
 use Moo::Role;
 
 with "App::Math::Tutor::Role::Natural";
 
-{ package RomanNumber;
+{ package RomanNum;
   use Moo;
-  extends "NaturalNumber"; # derives overloading!
+  extends "NatNum"; # derives overloading!
   sub _stringify { ... } }
 
 around "_guess_natural_number" => sub {
@@ -774,7 +777,7 @@ Some Moo extensions for getting a picture - the list is neither complete nor is 
 \begin{block}<1->{Conclusion}
 \begin{itemize}
 \item lazy attributes allow designing a multi-stage initialization phase
-\uncover<2->{\item benefit of common rumtime (faster load) when using}
+\uncover<2->{\item benefit of common runtime (faster load) when using}
 \uncover<3->{
 \begin{itemize}
 \item DBIx::Class
