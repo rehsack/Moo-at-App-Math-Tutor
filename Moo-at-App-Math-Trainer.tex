@@ -1,9 +1,9 @@
-\documentclass[ngerman,xcolor={table,dvipsnames},scriptsizeer,compress,hyperref={bookmarks,colorlinks}]{beamer}
+\documentclass[ngerman,xcolor={table,dvipsnames},smaller,compress,hyperref={bookmarks,colorlinks}]{beamer}
 
 \usepackage{url}
 \usepackage{listings}
 \usepackage[latin9]{inputenc}
-\usepackage{xcolor,textcomp}
+\usepackage{textcomp}
 %\usepackage{auto-pst-pdf}
 \usepackage{graphicx}
 \usepackage{pstricks}
@@ -11,10 +11,10 @@
 \usepackage{pst-uml}
 \usepackage{pst-tree}
 \usepackage{tabularx,threeparttable}
-\usepackage{hyperref}
 
 \title{Moo in practice - App::Math::Tutor}
 \author{Jens Rehsack}
+\institute[Niederrhein.PM]{Niederrhein Perl Mongers}
 \date{2014}
 
 \usetheme[secheader]{Boadilla}
@@ -28,11 +28,6 @@
 \makeatletter
 \makeatother
 
-%\newcommand{\mypart}[1]{\part{#1}\frame{\partpage \tableofcontents}}
-\newcommand{\mysection}[1]{\section{#1}\frame{\frametitle{Overview}\tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/shaded/shaded]}}
-\newcommand{\mysubsection}[1]{\subsection{#1}\frame{\frametitle{Overview}\tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/shaded/shaded]}}
-\newcommand{\mysubsubsection}[1]{\subsubsection{#1}\frame{\frametitle{Overview}\tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/shaded/shaded]}}
-
 \begin{document}
 
 \psset{angleA=90,angleB=-90}
@@ -43,8 +38,6 @@
         stringstyle=\color{Green},
         showstringspaces=false}
 
-%\AtBeginSection[]{\begin{frame}<beamer> \frametitle{Overview} \tableofcontents[current, currentsubsection] \end{frame}}
-%\AtBeginSubsection[]{\begin{frame}<beamer> \frametitle{Overview} \tableofcontents[current, currentsubsection] \end{frame}}
 \AtBeginPart{\begin{frame}<beamer> \frametitle{Overview} \partpage \tableofcontents[current] \end{frame}}
 
 \frame{\maketitle}
@@ -53,9 +46,9 @@
 
 \section{Introduction}
 
-\small
-\begin{frame}[fragile]
-\frametitle{Audience}
+\subsection{Audience}
+
+\begin{frame}[t,fragile]{Audience}
 \begin{block}<1->{Audience}
 \begin{itemize}
 \item Developer who wants to create or improve Perl5 software
@@ -68,23 +61,24 @@
 Following knowledge is expected:
 \begin{itemize}
 \item General knowledge about object oriented programming or concepts like
-      \begin{itemize}
-      \item methods
-      \item attributes
-      \item classes
-      \item objects
-      \item polymorphism
-      \item inheritance
-      \item roles
-      \end{itemize}
+    \small
+    \begin{itemize}
+    \item classes
+    \item objects
+    \item polymorphism, inheritance and/or roles
+    \item methods, class fcuntions
+    \item attributes, properties
+    \end{itemize}
+    \normalsize
 \item slightly above basic Perl experience
 \uncover<3->{\item ever heard of Smalltalk and its OO-concept is a strong bonus}
 \end{itemize}
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile]
-\frametitle{Motivation}
+\subsection{Motivation}
+
+\begin{frame}[t,fragile]{Motivation}
 
 \begin{block}<1->{Moo and App::Math::Tutor}
 \begin{itemize}
@@ -113,7 +107,9 @@ Following knowledge is expected:
 
 \section{Attributes}
 
-\begin{frame}[fragile]
+\subsection{Attributes in Moo}
+
+\begin{frame}[t,fragile]
 
 \begin{block}<1->{Attributes in Moo}
 \begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
@@ -140,7 +136,9 @@ has denom(*@\pnode(0,0){C}{}@*)inator => ( is => "(*@\pnode(0,0){E}{}@*)ro", req
 
 \end{frame}
 
-\begin{frame}[fragile]
+\subsection{Attribute Options}
+
+\begin{frame}[t,fragile]
 
 \begin{block}<1->{Attribute options I}
 \begin{description}
@@ -160,7 +158,7 @@ has denom(*@\pnode(0,0){C}{}@*)inator => ( is => "(*@\pnode(0,0){E}{}@*)ro", req
 
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[t,fragile]
 
 \begin{block}<1->{Attribute options II}
 \begin{description}
@@ -176,7 +174,7 @@ has denom(*@\pnode(0,0){C}{}@*)inator => ( is => "(*@\pnode(0,0){E}{}@*)ro", req
 
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[t,fragile]
 
 \begin{block}<1->{Attribute options III}
 \begin{description}
@@ -191,6 +189,8 @@ has denom(*@\pnode(0,0){C}{}@*)inator => ( is => "(*@\pnode(0,0){E}{}@*)ro", req
 \end{frame}
 
 \section{Methods}
+
+\subsection{Method Examples}
 
 \begin{frame}[t,fragile]
 
@@ -232,7 +232,7 @@ sub _numify { $_[0]->numerator / $_[0]->denominator; }
 \uncover<2->{\nccurve[linecolor=red]{->}{A}{a}}
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[t,fragile]
 
 \begin{block}<1->{Methods in Moo II}
 \scriptsize
@@ -259,6 +259,8 @@ sub _stringify {
 }
 
 \end{frame}
+
+\subsection{Method Modifiers}
 
 \begin{frame}[t,fragile]
 
@@ -291,7 +293,7 @@ around is called instead of the method it is modifying. The method you're overri
 
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[t,fragile]
 
 \begin{block}<1->{Methods Modifiers - around avoid calling \texttt{\$orig}}
 \scriptsize
@@ -324,7 +326,7 @@ around "_guess_natural_number" => sub {
 
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[t,fragile]
 
 \begin{block}<1->{Methods Modifiers - around modifying \texttt{\$orig} return value}
 \scriptsize
@@ -360,7 +362,9 @@ around "_guess_natural_number" => sub {
 
 \section{Structure}
 
-\begin{frame}[fragile]
+\subsection{Frontend}
+
+\begin{frame}[t,fragile]
 
 \begin{block}<1->{Frontend (dictated by MooX::Cmd)}
 \scriptsize
@@ -384,9 +388,11 @@ around "_guess_natural_number" => sub {
 
 \end{frame}
 
-\begin{frame}[fragile]
+\subsection{CLI Concept}
 
-\begin{block}<1->{Exercise groups}
+\begin{frame}[t,fragile]
+
+\begin{block}<1->{Exercise Groups}
 \begin{description}
 \item[App::Math::Tutor::Cmd::VulFrac] Exercises in vulgar fraction calculation
 \item[App::Math::Tutor::Cmd::Natural] Exercises in calculations using natural numbers
@@ -401,7 +407,9 @@ around "_guess_natural_number" => sub {
 
 \section{Design}
 
-\begin{frame}[fragile]
+\subsection{Simple Exercise}
+
+\begin{frame}[t,fragile]
 
 \begin{block}<1->{Typical Exercise design}
 \begin{pspicture}(12,7)%\psgrid
@@ -461,7 +469,9 @@ around "_guess_natural_number" => sub {
 
 \end{frame}
 
-\begin{frame}[fragile]
+\subsection{Derived Exercise}
+
+\begin{frame}[t,fragile]
 
 \begin{block}<1->{Derived Exercise design}
 \resizebox{\textwidth}{!}{
@@ -535,6 +545,8 @@ around "_guess_natural_number" => sub {
 
 \section{Improvements}
 
+\subsection{Design}
+
 \begin{frame}[t,fragile]
 
 \begin{block}<1->{Improving design}
@@ -562,12 +574,13 @@ around "_guess_natural_number" => sub {
 
 \end{frame}
 
-\part{Moo eXtensions for CLI}
+\part{Moo eXtensions}
 
-\section{MooX in general}
+\section{MooX}
 
-\begin{frame}[t,fragile]
-\frametitle{MooX in general}
+\subsection{General purpose eXtensions}
+
+\begin{frame}[t,fragile]{MooX in general}
 
 Some Moo extensions for getting a picture - the list is neither complete nor is it intended to be
 
@@ -587,10 +600,9 @@ Some Moo extensions for getting a picture - the list is neither complete nor is 
 
 \end{frame}
 
-\section{MooX for CLI}
+\subsection{CLI related eXtensions}
 
 \begin{frame}[t,fragile]{MooX Distributions for CLI}
-\frametitle{MooX Distributions for CLI}
 
 \begin{block}<1->{MooX::Cmd}
 \begin{itemize}
@@ -615,7 +627,7 @@ Some Moo extensions for getting a picture - the list is neither complete nor is 
 
 \end{frame}
 
-\begin{frame}[fragile]{General CLI Construction Flow}
+\begin{frame}[t,fragile]{General CLI Construction Flow}
 
 \resizebox{\textwidth}{!}{
 \begin{pspicture}(25,18)%\psgrid
@@ -772,6 +784,8 @@ Some Moo extensions for getting a picture - the list is neither complete nor is 
 
 \section{Conclusion}
 
+\subsection{}
+
 \begin{frame}[t,fragile]
 
 \begin{block}<1->{Conclusion}
@@ -806,9 +820,10 @@ Some Moo extensions for getting a picture - the list is neither complete nor is 
 
 \section{Resources}
 
+\subsection{Resources}
+
 % RESOURCES
-\begin{frame}[t,fragile]
-\frametitle{Resources}
+\begin{frame}[t,fragile]{Resources}
 \begin{block}<1->{Software}
 \url{https://metacpan.org/pod/Moo/} \\
 \url{https://github.com/moose/Moo} \\
@@ -825,9 +840,10 @@ Some Moo extensions for getting a picture - the list is neither complete nor is 
 \end{block}
 \end{frame}
 
+\subsection{Thank you}
+
 % THANKS
-\begin{frame}[fragile]
-\frametitle{Thank You For Listening}
+\begin{frame}[fragile]{Thank You For Listening}
 \begin{block}<1->{Questions?}
 Jens Rehsack \textless{}\href{mailto:rehsack@cpan.org}{rehsack@cpan.org}\textgreater{}
 \end{block}
