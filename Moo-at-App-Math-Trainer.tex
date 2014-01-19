@@ -10,7 +10,16 @@
 \usepackage{pst-node}
 \usepackage{pst-uml}
 \usepackage{pst-tree}
-\usepackage{tabularx,threeparttable}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+% for multipage tables (xtab or longtable
+\usepackage{longtable}
+\usepackage{lscape}
+\usepackage{booktabs}
+\usepackage[tableposition=top]{caption}
 
 \title{Moo in practice - App::Math::Tutor}
 \author{Jens Rehsack}
@@ -371,17 +380,17 @@ around "_guess_natural_number" => sub {
 \def\psedge#1#2{\ncdiagg[nodesep=3pt,angleA=180,armA=0]{#2}{#1}}
 \pstree[treemode=R,levelsep=*0.2cm,treesep=0.5cm]{\Tr{App::Math::Tutor}}{%
     \pstree[levelsep=*0.2cm]
-	{\Tr{App::Math::Tutor::Cmd::VulFrac}}
-	{\Tr{App::Math::Tutor::Cmd::VulFrac::Cmd::Add} \Tr{App::Math::Tutor::Cmd::VulFrac::Cmd::Mul} \Tr{App::Math::Tutor::Cmd::VulFrac::Cmd::Cast}}
+        {\Tr{App::Math::Tutor::Cmd::VulFrac}}
+        {\Tr{App::Math::Tutor::Cmd::VulFrac::Cmd::Add} \Tr{App::Math::Tutor::Cmd::VulFrac::Cmd::Mul} \Tr{App::Math::Tutor::Cmd::VulFrac::Cmd::Cast}}
     \pstree[levelsep=*0.2cm]
-	{\Tr{App::Math::Tutor::Cmd::Natural}}
-	{\Tr{App::Math::Tutor::Cmd::Natural::Cmd::Add} \Tr{App::Math::Tutor::Cmd::Natural::Cmd::Mul}}
+        {\Tr{App::Math::Tutor::Cmd::Natural}}
+        {\Tr{App::Math::Tutor::Cmd::Natural::Cmd::Add} \Tr{App::Math::Tutor::Cmd::Natural::Cmd::Mul}}
     \pstree[levelsep=*0.2cm]
-	{\Tr{App::Math::Tutor::Cmd::Roman}}
-	{\Tr{App::Math::Tutor::Cmd::Roman::Cmd::Add} \Tr{App::Math::Tutor::Cmd::Roman::Cmd::Cast}}
+        {\Tr{App::Math::Tutor::Cmd::Roman}}
+        {\Tr{App::Math::Tutor::Cmd::Roman::Cmd::Add} \Tr{App::Math::Tutor::Cmd::Roman::Cmd::Cast}}
     \pstree[levelsep=*0.2cm]
-	{\Tr{App::Math::Tutor::Cmd::Unit}}
-	{\Tr{App::Math::Tutor::Cmd::Unit::Cmd::Add} \Tr{App::Math::Tutor::Cmd::Unit::Cmd::Mul} \Tr{App::Math::Tutor::Cmd::Unit::Cmd::Cast}}
+        {\Tr{App::Math::Tutor::Cmd::Unit}}
+        {\Tr{App::Math::Tutor::Cmd::Unit::Cmd::Add} \Tr{App::Math::Tutor::Cmd::Unit::Cmd::Mul} \Tr{App::Math::Tutor::Cmd::Unit::Cmd::Cast}}
 }
 
 \end{block}
@@ -589,8 +598,8 @@ Some Moo extensions for getting a picture - the list is neither complete nor is 
 \item[MooX::Log::Any] logging role building a very lightweight wrapper to Log::Any
 \uncover<2->{\item[MooX::Validate] minimalist Data Validation for Moo}
 \uncover<3->{\item[MooX::Types::MooseLike] Moose like types for Moo}
-\uncover<4->{\item[MooX::Override] adds "override method =\textgreater{} sub {\ldots}" support to Moo}
-\uncover<5->{\item[MooX::Augment] adds "augment method =\textgreater{} sub {\ldots}" support to Moo}
+\uncover<4->{\item[MooX::Override] adds ''override method =\textgreater{} sub {\ldots}'' support to Moo}
+\uncover<5->{\item[MooX::Augment] adds ''augment method =\textgreater{} sub {\ldots}'' support to Moo}
 \uncover<6->{\item[MooX::late] easily translate Moose code to Moo}
 \uncover<7->{\item[MooX::PrivateAttributes] create attribute only usable inside your package}
 \uncover<8->{\item[MooX::Singleton] turn your Moo class into singleton}
@@ -780,11 +789,415 @@ Some Moo extensions for getting a picture - the list is neither complete nor is 
 
 \end{frame}
 
+\part{Current Practice}
+
+\section{Provided Framework}
+
+\subsection{Exercise Role}
+
+\begin{frame}[t,fragile]
+
+\begin{block}<1->{}
+\scriptsize
+\begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
+package App::Math::Tutor::Role::Exercise;
+
+use strictures; # instead of strict + warnings
+use Moo::Role(*@\pnode(0,0){A}{}@*); use MooX::Options(*@\pnode(0,0){B}{}@*);
+
+option (*@\pnode(0,0){C}{}@*)amount => (
+                   is       => "ro",
+                   doc      => "Specifies amount of exercises to generate",
+                   (*@\pnode(0,0){D}{}@*)long_doc => "Specify amount of exercises to generate. "
+                     . "In case of several kind of ...",
+                   format  => "i",
+                   short   => "n",
+                   default => sub { 15 },
+                 );
+
+has output(*@\pnode(0,0){E}{}@*)_name => ( is => "lazy(*@\pnode(0,0){F}{}@*)" );
+sub (*@\pnode(0,0){G}{}@*)_build_output_name {
+    join( "", map { $_->command_name || "" } @{ $_[0]->command_chain } );
+}
+\end{lstlisting}
+\end{block}
+
+\begin{itemize}
+\uncover<2->{\item being a \rnode{a}{role} (no \textit{is a} relationship) \uncover<3->{and add \rnode{b}{CLI options} capabilities}}
+\uncover<4->{\item defining an \rnode{c}{attribute} which will be initialized by command line}
+\uncover<5->{\item support MooX::Option's \rnode{d}{\texttt{--man}} usage feature}
+\uncover<6->{\item attribute for \rnode{e}{output file} to generate \uncover<7->{--- \rnode{f}{lazy} to allow provide individual \rnode{g}{name builder}}}
+\end{itemize}
+\uncover<2-3>{\nccurve[linecolor=olive]{->}{a}{A}}
+\uncover<3>{\nccurve[linecolor=olive]{->}{b}{B}}
+\uncover<4-5>{\nccurve[linecolor=olive]{->}{c}{C}}
+\uncover<5>{\nccurve[linecolor=olive]{->}{d}{D}}
+\uncover<6-8>{\nccurve[linecolor=teal]{->}{e}{E}}
+\uncover<7-8>{\nccurve[linecolor=cyan]{->}{f}{F}}
+\uncover<8>{\nccurve[linecolor=cyan]{->}{g}{G}}
+
+\end{frame}
+
+\begin{frame}[t,fragile]
+
+\begin{block}<1->{}
+\scriptsize
+\begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
+has (*@\pnode(0,0){A}{}@*)exercises => ( is => "lazy(*@\pnode(0,0){B}{}@*)" );
+sub (*@\pnode(0,0){C}{}@*)execute {
+    my $exercises = $_[0]-(*@\pnode(0,0){D}{}@*)>exercises;
+    my $ttcpath = (*@\pnode(0,0){E}{}@*)File::Spec->catfile(
+        File::ShareDir::dist_dir("App-Math-Tutor")(*@\pnode(0,0){F}{}@*),
+        $_[0]->(*@\pnode(0,0){G}{}@*)template_filename . ".tt2" );
+    my $template = Template(*@\pnode(0,0){H}{}@*)->new( { ABSOLUTE => 1 });
+    my $rc = $template->(*@\pnode(0,0){I}{}@*)process( $ttcpath, {
+                                    exercises => $exercises,
+                                    output    => { format(*@\pnode(0,0){J}{}@*) => 'pdf' },
+                                 },
+                                 $_[0]->output_name . '.pdf');
+    $rc or croak( $template->error() );
+    return 0;
+}
+\end{lstlisting}
+\end{block}
+
+\begin{itemize}
+\uncover<2->{\item attribute containing the \rnode{a}{exercises} definitions, exercises itself and their solutions
+             (depending on template)\uncover<3->{ --- lazy \rnode{b}{implies} \texttt{requires ''\_build\_exercises''}}}
+\uncover<4->{\item \rnode{c}{method} to satisfy \texttt{MooX::Cmd}}
+\uncover<5->{\item \rnode{d}{fetch} exercises definition \uncover<6->{implies calling \texttt{\_build\_exercises}}}
+\uncover<7->{\item build \rnode{e}{full qualified path} of \rnode{g}{template} file name residing in app's \rnode{f}{\texttt{share}} directory,
+             \uncover<10->{instantiate template \rnode{h}{processor} \uncover<11->{and \rnode{i}{run} it}}}
+\uncover<12->{\item force output \rnode{j}{format} ''pdf'' (\texttt{Template::LaTeX} will be instructed by template)}
+\end{itemize}
+\uncover<2-3>{\nccurve[linecolor=teal]{->}{a}{A}}
+\uncover<3>{\nccurve[linecolor=red]{->}{b}{B}}
+\uncover<4>{\nccurve[linecolor=blue]{->}{c}{C}}% blau macht glücklich :P /wave Getty
+\uncover<5-6>{\nccurve[linecolor=RedViolet]{->}{d}{D}}
+\uncover<7-9>{\nccurve[linecolor=teal]{->}{e}{E}}
+\uncover<8-9>{\nccurve[linecolor=teal]{->}{f}{F}}
+\uncover<9>{\nccurve[linecolor=cyan]{->}{g}{G}}
+\uncover<10-11>{\nccurve[linecolor=teal]{->}{h}{H}}
+\uncover<11>{\nccurve[linecolor=teal]{->}{i}{I}}
+\uncover<12>{\nccurve[linecolor=olive]{->}{j}{J}}
+
+\end{frame}
+
+\subsection{Vulgar Fraction Exercise Role}
+
+\begin{frame}[t,fragile]
+
+\begin{block}<1->{}
+\scriptsize
+\begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
+package App::Math::Tutor::Role::Vul(*@\pnode(0,0){E0}{}@*)FracExercise(*@\pnode(0,0){D0}{}@*);
+use (*@\pnode(0,0){A}{}@*)strictures; use (*@\pnode(0,0){B}{}@*)Moo::Role; use (*@\pnode(0,0){C}{}@*)MooX::Options;
+with (*@\pnode(0,0){D}{}@*)"App::Math::Tutor::Role::Exercise", (*@\pnode(0,0){E}{}@*)"App::Math::Tutor::Role::VulFrac";
+
+option (*@\pnode(0,0){F}{}@*)format => (
+    is       => "ro",
+    doc      => "specifies format of numerator/denominator",
+    long_doc => "Allow specifying the format of the numerator/denominator ...",
+    (*@\pnode(0,0){G}{}@*)isa => sub { defined( $_[0] ) and !ref $_[0]
+          and $_[0] !~ m,^\d?n+(?:/\d?n+)?$, and die("Invalid format");
+    },
+    (*@\pnode(0,0){H}{}@*)coerce => sub { ...
+        my ( $fmta, $fmtb ) = ( $_[0] =~ m,^(\d?n+)(?:/(\d?n+))?$, );
+        $fmtb //= $fmta;
+        my $starta = "1"; my $startb = "1";
+        $fmta =~ s/^(\d)(.*)/$2/ and $starta = $1;
+        $fmtb =~ s/^(\d)(.*)/$2/ and $startb = $1;
+        [ $starta . "0" x length($fmta), $startb . "0" x length($fmtb) ]
+    },
+    default => sub { return [ 100, 100 ]; }, format  => "s",
+                 );
+\end{lstlisting}
+\end{block}
+
+\begin{itemize}
+\uncover<2->{\item be \rnode{a}{a nice} package \uncover<3->{\rnode{b}{\textasciicircum{}Wrole}, \uncover<4->{intending to provide command line options for instantiation}}}
+\uncover<5->{\item compose role behavior using \rnode{d}{Exercise} and \rnode{e}{VulFrac}}
+\uncover<7->{\item define \rnode{f}{option} \uncover<8->{\rnode{h}{coercing} option string into array \uncover<9->{\rnode{g}{ensuring} the array ref as value}}}
+\end{itemize}
+\uncover<2-4>{\nccurve[linecolor=blue]{->}{a}{A}}
+\uncover<3-4>{\nccurve[linecolor=RedViolet]{->}{b}{B}}
+\uncover<4>{\nccurve[linecolor=teal]{->}{c}{C}}
+\uncover<5>{\nccurve[linecolor=blue]{->}{d}{D}}
+\uncover<5>{\nccurve[linecolor=RedViolet]{->}{d}{D0}}
+\uncover<6>{\nccurve[linecolor=blue]{->}{e}{E}}
+\uncover<6>{\nccurve[linecolor=RedViolet]{->}{e}{E0}}
+\uncover<7-9>{\nccurve[linecolor=olive]{->}{f}{F}}
+\uncover<8-9>{\nccurve[linecolor=blue]{->}{h}{H}}
+\uncover<9>{\nccurve[linecolor=RedViolet]{->}{g}{G}}
+\end{frame}
+
+\section{Create Exercise}
+
+\subsection{Preamble}
+
+\begin{frame}[t,fragile]
+
+\begin{block}<1->{}
+\scriptsize
+\begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
+package App::Math::(*@\pnode(0,0){A}{}@*)Tutor::Cmd::(*@\pnode(0,0){B}{}@*)VulFrac::Cmd::(*@\pnode(0,0){C}{}@*)Add;
+
+use strictures;
+
+use Moo;
+use MooX::Cmd;
+use MooX::Options;
+
+has (*@\pnode(0,0){D}{}@*)template_filename => ( is      => "ro",
+                           default => "twocols"(*@\pnode(0,0){E}{}@*));
+
+(*@\pnode(0,0){F}{}@*)with "App::Math::Tutor::Role::VulFracExercise(*@\pnode(0,0){G}{}@*)";
+\end{lstlisting}
+\end{block}
+
+\begin{itemize}
+\uncover<2->{\item \texttt{\$ \rnode{a}{mtut} \uncover<3->{\rnode{b}{vulfrac} \uncover<4->{\rnode{c}{add}}}}}
+\uncover<5->{\item we're of course a nice class}
+\uncover<6->{\item satisfy requirement of Exercise role: provide \rnode{d}{template\_filename} \uncover<7->{-- \rnode{e}{two column} template (for addition and substraction)}}
+\uncover<8->{\item \rnode{f}{compose} role \texttt{\ldots{}\rnode{g}{VulFracExercise}}}
+\end{itemize}
+\uncover<2-4>{\nccurve[linecolor=cyan]{->}{a}{A}}
+\uncover<3-4>{\nccurve[linecolor=cyan]{->}{b}{B}}
+\uncover<4>{\nccurve[linecolor=cyan]{->}{c}{C}}
+\uncover<6-7>{\nccurve[linecolor=blue]{->}{d}{D}}
+\uncover<7>{\nccurve[linecolor=blue]{->}{e}{E}}
+\uncover<8>{\nccurve[linecolor=teal]{->}{f}{F}}
+\uncover<8>{\nccurve[linecolor=teal]{->}{g}{G}}
+\end{frame}
+
+\subsection{Create Exercise Numbers}
+
+\begin{frame}[t,fragile]
+
+\begin{block}<1->{}
+\scriptsize
+\begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
+sub (*@\pnode(0,0){A}{}@*)_build_exercises {
+    my ($self) = @_;
+
+    my ((*@\pnode(0,0){B}{}@*)@tasks);
+    foreach my $i ( 1 .. $self->(*@\pnode(0,0){C}{}@*)amount ) {
+        my @line(*@\pnode(0,0){F0}{}@*);
+        for ( (*@\pnode(0,0){D}{}@*)0 .. 1 ) { # 0: +, 1: -
+            my ( $a, $b ) = $self->(*@\pnode(0,0){E}{}@*)get_vulgar_fractions(2);
+            push @line, [ $a, $b ];
+        }
+        push(*@\pnode(0,0){F}{}@*) @tasks, \@line;
+    }
+
+    my $exercises = ...;
+    return $exercises;
+}
+\end{lstlisting}
+\end{block}
+
+\begin{itemize}
+\uncover<2->{\item \rnode{a}{exercise builder} has to be provided by individual exercise}
+\uncover<3->{\item hold \rnode{b}{tasks} of the exercise sheet}
+\uncover<4->{\item \rnode{c}{how many} tasks per sheet? \uncover<5->{(remember the option in \texttt{\ldots{}Role::Exercise})}}
+\uncover<6->{\item \rnode{d}{a ''+'' and a ''-''} exercise per line}
+\uncover<7->{\item invoke \rnode{e}{factory} per task}
+\uncover<8->{\item \rnode{f}{safe} each \rnode{f0}{line} for processing}
+\end{itemize}
+\uncover<2>{\nccurve[linecolor=teal]{->}{a}{A}}
+\uncover<3>{\nccurve[linecolor=olive]{->}{b}{B}}
+\uncover<4>{\nccurve[linecolor=olive]{->}{c}{C}}
+\uncover<6>{\nccurve[linecolor=cyan]{->}{d}{D}}
+\uncover<7>{\nccurve[linecolor=cyan]{->}{e}{E}}
+\uncover<8>{\nccurve[linecolor=olive]{->}{f}{F}}
+\uncover<8>{\nccurve[linecolor=olive]{->}{f0}{F0}}
+
+\end{frame}
+
+\subsection{Format Challenge / Solution}
+
+\begin{frame}[t,fragile]
+
+\begin{block}<1->{}
+\scriptsize
+\begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
+my (*@\pnode(0,0){A}{}@*)$exercises = {
+                  section => "Vulgar fraction addition / subtraction",
+                  caption => 'Fractions',
+                  label   => 'vulgar_fractions_addition',
+                  header  => [ [ 'Vulgar Fraction Addition', 'Vulgar Fraction Subtraction' ] ],
+                  (*@\pnode(0,0){B}{}@*)challenges => [], (*@\pnode(0,0){C}{}@*)solutions  => [],
+                };
+
+foreach(*@\pnode(0,0){D}{}@*) my $line (@tasks) {
+    my ( @solution, @challenge );
+    foreach(*@\pnode(0,0){E}{}@*) my $i ( 0 .. 1 ) {
+        my ( $a, $b, @way ) = @{ $line->[$i] }; my $op = $i ? '-' : '+';
+        $op eq '-' and $a < $b and (*@\pnode(0,0){F}{}@*)( $b, $a ) = ( $a, $b );
+        push (*@\pnode(0,0){G}{}@*)@challenge, sprintf( '$ (*@\pnode(0,0){H}{}@*)%s %s (*@\pnode(0,0){I}{}@*)%s = $', (*@\pnode(0,0){J}{}@*)$a, $op, (*@\pnode(0,0){K}{}@*)$b );
+        push (*@\pnode(0,0){M}{}@*)@way, sprintf( '(*@\pnode(0,0){L}{}@*)%s %s %s', $a, $op, $b );
+        ...
+    }
+    push( @{ $exercises->{(*@\pnode(0,0){N}{}@*)challenges} }, \@challenge );
+    push( @{ $exercises->{solutions(*@\pnode(0,0){O}{}@*)} },  \@solution );
+}
+\end{lstlisting}
+\end{block}
+
+\begin{itemize}
+\uncover<2->{\item \rnode{a}{create} exercise structure containing \uncover<3->{\rnode{b}{challenges} and \rnode{c}{solutions}}}
+\uncover<5->{\item \rnode{d}{loop} over created tasks \uncover<6->{and exercises \rnode{e}{per line}}}
+\uncover<7->{\item format \rnode{g}{challenge} using \rnode{h}{\texttt{operator '""'}} of \rnode{j}{\texttt{VulFrac}} objects}
+\uncover<10->{\item \rnode{l}{same} (but \rnode{m}{different}) opening ''way'' \uncover<12->{and \rnode{n}{remember} the little thingies \ldots}}
+\end{itemize}
+\uncover<2-4>{\nccurve[linecolor=teal]{->}{a}{A}}
+\uncover<3-4>{\nccurve[linecolor=olive]{->}{b}{B}}
+\uncover<4>{\nccurve[linecolor=olive]{->}{c}{C}}
+\uncover<5-6>{\nccurve[linecolor=cyan]{->}{d}{D}}
+\uncover<6>{\nccurve[linecolor=cyan]{->}{e}{E}}
+\uncover<7-9>{\nccurve[linecolor=teal]{->}{g}{G}}
+\uncover<8-9>{\nccurve[linecolor=cyan]{->}{h}{H}}
+\uncover<8-9>{\nccurve[linecolor=cyan]{->}{h}{I}}
+\uncover<9>{\nccurve[linecolor=olive]{->}{j}{J}}
+\uncover<9>{\nccurve[linecolor=olive]{->}{j}{K}}
+\uncover<10-11>{\nccurve[linecolor=teal]{->}{l}{L}}
+\uncover<11>{\nccurve[linecolor=RedViolet]{->}{m}{M}}
+\uncover<12>{\nccurve[linecolor=teal]{->}{n}{N}}
+\uncover<12>{\nccurve[linecolor=teal]{->}{n}{O}}
+
+\end{frame}
+
+\subsection{Format Solutions}
+
+\begin{frame}[t,fragile]
+
+\begin{block}<1->{}
+\scriptsize
+\begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
+sub _build_exercises {
+    ( $a, $b ) = ( $a->(*@\pnode(0,0){A1}{}@*)_reduce, $b = (*@\pnode(0,0){A2}{}@*)$b->_reduce );
+    push (*@\pnode(0,0){B}{}@*)@way, sprintf( '%s %s %s', $a, $op, $b )
+      if ( $a->num !=(*@\pnode(0,0){C}{}@*) $line->[$i]->[0]->num or $b->num != ... );
+
+    my $(*@\pnode(0,0){F}{}@*)gcd = VulFrac->new( num => $a->denum, denum => $b->denum )->_gcd;
+    my ( $fa, $fb ) = ( $b->{denum} / $gcd, $a->{denum} / $gcd );
+    push @way, (*@\pnode(0,0){G}{}@*)sprintf( '\frac{%d \cdot %d}{%d \cdot %d} %s ...',
+               $a->num, $fa, $a->denum, $fa, $op, $b->num, $fb, ... );
+    push @way, (*@\pnode(0,0){H}{}@*)sprintf( '\frac{%d}{%d} %s \frac{%d}{%d}',
+               $a->num*$fa, $a->denum*$fa, $op, $b->num*$fb, $b->denum*$fb );
+    push @way, (*@\pnode(0,0){J}{}@*)sprintf( '\frac{%d %s %d}{%d}',
+               $a->num * $fa, $op, $b->num * $fb, $a->denum * $fa );
+    my $s = (*@\pnode(0,0){K}{}@*)VulFrac->new( denum => $a->denum * $fa,
+                  num => $i ? $a->num * $fa - $b->num * $fb : ...s/-/+/);
+    push @way, "" . $s; my (*@\pnode(0,0){L}{}@*)$c = $s->_reduce; $c->num != $s->num and push @way, "" . $c;
+    $c->num > $c->denum and $c->denum > 1 and push @way, $c->_stringify((*@\pnode(0,0){M}{}@*)1);
+
+    push( @solution, '$ ' . (*@\pnode(0,0){N}{}@*)join( " = ", @way ) . ' $' );
+}
+\end{lstlisting}
+\end{block}
+
+\begin{itemize}
+\uncover<2->{\item try to reduce \rnode{a}{\texttt{operands}} \uncover<3->{and \rnode{b}{add} them to opening \uncover<4->{when \rnode{c}{successful}}}}
+\uncover<5->{\item World of Handcraft: show calculation method by \uncover<6->{determine \rnode{f}{geatest common divisor} of operands denominator,
+             \uncover<7->{format \rnode{g}{subsequent} \uncover<8->{\rnode{h}{steps} to \rnode{j}{reach}
+	     \uncover<9->{the \rnode{k}{solution}}}}}}
+\uncover<10->{\item remark \rnode{l}{possible} reducing, \uncover<11->{\rnode{m}{mixed} fraction, \uncover<12->{\rnode{n}{cord} it and go ahead}}}
+\end{itemize}
+\uncover<2-4>{\nccurve[linecolor=teal]{->}{a}{A1}}
+\uncover<2-4>{\nccurve[linecolor=teal]{->}{a}{A2}}
+\uncover<3-4>{\nccurve[linecolor=cyan]{->}{b}{B}}
+\uncover<4>{\nccurve[linecolor=RedViolet]{->}{c}{C}}
+\uncover<5-9>{\nccurve[linecolor=teal]{->}{f}{F}}
+\uncover<6-9>{\nccurve[linecolor=cyan]{->}{g}{G}}
+\uncover<7-9>{\nccurve[linecolor=cyan]{->}{h}{H}}
+\uncover<8-9>{\nccurve[linecolor=cyan]{->}{j}{J}}
+\uncover<9>{\nccurve[linecolor=blue]{->}{k}{K}}
+\uncover<10-12>{\nccurve[linecolor=teal]{->}{l}{L}}
+\uncover<11-12>{\nccurve[linecolor=teal]{->}{m}{M}}
+\uncover<12>{\nccurve[linecolor=blue]{->}{n}{N}}
+
+\end{frame}
+
+\renewcommand{\baselinestretch}{1.5}
+
+\section{Created Exercise Output}
+
+\subsection{Challenges}
+
+\begin{frame}[t,fragile]
+
+\begin{block}<1->{}
+
+\footnotesize
+\begin{longtable}[l]{p{5cm}|p{5cm}}
+\toprule
+Vulgar Fraction Addition & Vulgar Fraction Subtraction \\
+\midrule
+\endfirsthead
+
+\toprule
+Vulgar Fraction Addition & Vulgar Fraction Subtraction \\
+\midrule
+\endhead
+\midrule
+\multicolumn{2}{r}{{Continued on next page}} \\
+\bottomrule
+\endfoot
+
+\caption{Fractions\label{vulgar_fractions_addition}}\\
+\endlastfoot
+$ \frac{99}{67} + \frac{43}{84} = $ & $ \frac{45}{41} - \frac{32}{48} = $ \\
+$ \frac{19}{7} + \frac{16}{54} = $  & $ \frac{51}{47} - \frac{49}{65} = $ \\
+$ \frac{38}{82} + \frac{38}{99} = $ & $ \frac{56}{33} - \frac{30}{32} = $ \\
+$ \frac{96}{80} + \frac{46}{39} = $ & $ \frac{49}{79} - \frac{29}{82} = $ \\
+$ \frac{72}{68} + \frac{46}{99} = $ & $ \frac{42}{49} - \frac{38}{59} = $ \\
+\bottomrule
+\end{longtable}
+
+\end{block}
+
+\end{frame}
+
+\subsection{Solutions}
+
+\begin{frame}[t,fragile]
+
+\begin{block}<1->{}
+
+\footnotesize
+\begin{longtable}[l]{p{5cm}|p{5cm}}
+\toprule
+Vulgar Fraction Addition & Vulgar Fraction Subtraction \\
+\midrule
+\endfirsthead
+
+\toprule
+Vulgar Fraction Addition & Vulgar Fraction Subtraction \\
+\midrule
+\endhead
+\midrule
+\multicolumn{2}{r}{{Continued on next page}} \\
+\bottomrule
+\endfoot
+
+\caption{Solution Fractions\label{solutionvulgar_fractions_addition}}\\
+\endlastfoot
+$ \frac{99}{67} + \frac{43}{84} = \frac{99 \cdot 84}{67 \cdot 84} + \frac{43 \cdot 67}{84 \cdot 67} = \frac{8316}{5628} + \frac{2881}{5628} = \frac{8316 + 2881}{5628} = \frac{11197}{5628} = \normalsize{1} \frac{5569}{5628} $                             & $ \frac{45}{41} - \frac{32}{48} = \frac{45}{41} - \frac{2}{3} = \frac{45 \cdot 3}{41 \cdot 3} - \frac{2 \cdot 41}{3 \cdot 41} = \frac{135}{123} - \frac{82}{123} = \frac{135 - 82}{123} = \frac{53}{123} $                                                \\
+$ \frac{19}{7} + \frac{16}{54} = \frac{19}{7} + \frac{8}{27} = \frac{19 \cdot 27}{7 \cdot 27} + \frac{8 \cdot 7}{27 \cdot 7} = \frac{513}{189} + \frac{56}{189} = \frac{513 + 56}{189} = \frac{569}{189} = \normalsize{3} \frac{2}{189} $                    & $ \frac{51}{47} - \frac{49}{65} = \frac{51}{47} - \frac{49}{65} = \frac{51 \cdot 65}{47 \cdot 65} - \frac{49 \cdot 47}{65 \cdot 47} = \frac{3315}{3055} - \frac{2303}{3055} = \frac{3315 - 2303}{3055} = \frac{1012}{3055} $                              \\
+$ \frac{38}{82} + \frac{38}{99} = \frac{19}{41} + \frac{38}{99} = \frac{19 \cdot 99}{41 \cdot 99} + \frac{38 \cdot 41}{99 \cdot 41} = \frac{1881}{4059} + \frac{1558}{4059} = \frac{1881 + 1558}{4059} = \frac{3439}{4059} $                                 & $ \frac{56}{33} - \frac{30}{32} = \frac{56}{33} - \frac{15}{16} = \frac{56 \cdot 16}{33 \cdot 16} - \frac{15 \cdot 33}{16 \cdot 33} = \frac{896}{528} - \frac{495}{528} = \frac{896 - 495}{528} = \frac{401}{528} $                                       \\
+$ \frac{96}{80} + \frac{46}{39} = \frac{6}{5} + \frac{46}{39} = \frac{6 \cdot 39}{5 \cdot 39} + \frac{46 \cdot 5}{39 \cdot 5} = \frac{234}{195} + \frac{230}{195} = \frac{234 + 230}{195} = \frac{464}{195} = \normalsize{2} \frac{74}{195} $                & $ \frac{49}{79} - \frac{29}{82} = \frac{49 \cdot 82}{79 \cdot 82} - \frac{29 \cdot 79}{82 \cdot 79} = \frac{4018}{6478} - \frac{2291}{6478} = \frac{4018 - 2291}{6478} = \frac{1727}{6478} $                                                              \\
+$ \frac{72}{68} + \frac{46}{99} = \frac{18}{17} + \frac{46}{99} = \frac{18 \cdot 99}{17 \cdot 99} + \frac{46 \cdot 17}{99 \cdot 17} = \frac{1782}{1683} + \frac{782}{1683} = \frac{1782 + 782}{1683} = \frac{2564}{1683} = \normalsize{1} \frac{881}{1683} $ & $ \frac{42}{49} - \frac{38}{59} = \frac{6}{7} - \frac{38}{59} = \frac{6 \cdot 59}{7 \cdot 59} - \frac{38 \cdot 7}{59 \cdot 7} = \frac{354}{413} - \frac{266}{413} = \frac{354 - 266}{413} = \frac{88}{413} $                                              \\
+\bottomrule
+\end{longtable}
+
+\end{block}
+
+\end{frame}
+
 \part{Finish}
 
 \section{Conclusion}
-
-\subsection{}
 
 \begin{frame}[t,fragile]
 
