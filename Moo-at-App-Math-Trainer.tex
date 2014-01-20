@@ -642,10 +642,10 @@ Some Moo extensions for getting a picture - the list is neither complete nor is 
 \begin{pspicture}(25,18)%\psgrid
      % 
      \rput(2,17.5){\rnode{main}{\umlClass{\underline{:main}}{}}}
-     \rput(6,17.5){\rnode{Cmd}{\umlClass{\underline{:MooX::Cmd}}{}}}
-     \rput(11,17.5){\rnode{Options}{\umlClass{\underline{:MooX::Options}}{}}}
-     \rput(16,17.5){\rnode{CFF}{\umlClass{\underline{:MooX::ConfigFromFile}}{}}}
-     \rput(22,17.5){\rnode{Core}{\umlClass{\underline{:Moo}}{}}}
+     \uncover<2->{\rput(6,17.5){\rnode{Cmd}{\umlClass{\underline{:MooX::Cmd}}{}}}}
+     \uncover<4->{\rput(11,17.5){\rnode{Options}{\umlClass{\underline{:MooX::Options}}{}}}}
+     \uncover<7->{\rput(16,17.5){\rnode{CFF}{\umlClass{\underline{:MooX::ConfigFromFile}}{}}}}
+     \uncover<6->{\rput(22,17.5){\rnode{Core}{\umlClass{\underline{:Moo}}{}}}}
 
      %\\[+0.3cm] % 2: new_with_cmd()
      %{} & {} & {} & {} & {} \\[-0.6cm]
@@ -673,98 +673,111 @@ Some Moo extensions for getting a picture - the list is neither complete nor is 
      %{} & {} \\[0cm] % 24 ([0cm] necessary : bug ?)
      %
      \rput(2,1){\rnode{mainEnd}{ }}
-     \rput(6,1){\rnode{CmdEnd}{}}
-     \rput(11,1){\rnode{OptionsEnd}{}}
-     \rput(16,1){\rnode{CFFEnd}{}}
-     \rput(22,1){\rnode{CoreEnd}{}}
+     \uncover<2->{\rput(6,1){\rnode{CmdEnd}{}}}
+     \uncover<4->{\rput(11,1){\rnode{OptionsEnd}{}}}
+     \uncover<7->{\rput(16,1){\rnode{CFFEnd}{}}}
+     \uncover<6->{\rput(22,1){\rnode{CoreEnd}{}}}
      \ncline[linestyle=dashed]{main}{mainEnd}
-     \ncline[linestyle=dashed]{Cmd}{CmdEnd}
-     \ncline[linestyle=dashed]{Options}{OptionsEnd}
-     \ncline[linestyle=dashed]{CFF}{CFFEnd}
-     \ncline[linestyle=dashed]{Core}{CoreEnd}
+     \uncover<2->{\ncline[linestyle=dashed]{Cmd}{CmdEnd}}
+     \uncover<4->{\ncline[linestyle=dashed]{Options}{OptionsEnd}}
+     \uncover<7->{\ncline[linestyle=dashed]{CFF}{CFFEnd}}
+     \uncover<6->{\ncline[linestyle=dashed]{Core}{CoreEnd}}
 
      \psframe[linewidth=0.5pt,linestyle=solid,fillstyle=solid,fillcolor=white](1.8,16.5)(2.2,1.5)
+     \uncover<2->{
      \psframe[linewidth=0.5pt,linestyle=solid,fillstyle=solid,fillcolor=white](5.8,16.5)(6.2,1.5)
      \rput(2.2,16.5){\rnode{main2nwc}{}}
      \rput(5.8,16.5){\rnode{nwcS}{}} % new_with_cmd_Start
      \rput(5.8,1.5){\rnode{nwcE}{}} % new_with_cmd_End
      \rput(2.2,1.5){\rnode{mainC}{}} % main Continue / exit
-     \ncline[linewidth=0.5pt,linestyle=solid]{->}{main2nwc}{nwcS}\naput*[Ynodesep=0.5]{\small new\_with\_cmd()}
+     \ncline[linewidth=0.5pt,linestyle=solid]{->}{main2nwc}{nwcS}\naput*[Ynodesep=0.5]{\small new\_with\_cmd()}}
 
+     \uncover<3->{
      \rput(6.2,16.25){\rnode{bccS}{}}
      \rput(6.2,14.75){\rnode{bccE}{}}
      \ncEVW[linewidth=0.5pt,linestyle=solid]{bccE}{bccS}
      \ncputicon[npos=0]{umlV}
-     \nbput*[nrot=:U,npos=1.25]{\small \shortstack{\_build\_command\\\_commands()}}%
+     \nbput*[nrot=:U,npos=1.25]{\small \shortstack{\_build\_command\\\_commands()}}}
 
+     \uncover<3->{
      \rput(6.2,14.25){\rnode{savS}{}}
      \rput(6.2,12.75){\rnode{savE}{}}
      \ncEVW[linewidth=0.5pt,linestyle=solid]{savE}{savS}
      \ncputicon[npos=0]{umlV}
-     \nbput*[nrot=:U,npos=1.25]{\small \_split\_argv}
+     \nbput*[nrot=:U,npos=1.25]{\small \_split\_argv}}
 
+     \uncover<4->{
      \psframe[linewidth=0.5pt,linestyle=solid,fillstyle=solid,fillcolor=white](10.8,12.5)(11.2,3.5)
      \rput(6.2,12.5){\rnode{nwc2cc}{}} % new_with_cmd -> _chained_constructor
      \rput(10.8,12.5){\rnode{nwoS}{}} % new_with_options_Start
      \rput(10.8,3.5){\rnode{nwoE}{}} % new_with_options_End
      \rput(6.2,3.5){\rnode{nwcC}{}} % new_with_cmd Continue
-     \ncline[linewidth=0.5pt,linestyle=solid]{->}{nwc2cc}{nwoS}\naput*[Ynodesep=0.5]{\small new\_with\_options()}
+     \ncline[linewidth=0.5pt,linestyle=solid]{->}{nwc2cc}{nwoS}\naput*[Ynodesep=0.5]{\small new\_with\_options()}}
 
+     \uncover<5->{
      \rput(11.2,12.25){\rnode{poS}{}}
      \rput(11.2,10.75){\rnode{poE}{}}
      \ncEVW[linewidth=0.5pt,linestyle=solid]{poE}{poS}
      \ncputicon[npos=0]{umlV}
-     \nbput*[nrot=:U,npos=1.25]{\small \shortstack{\_parse\\\_options}}
+     \nbput*[nrot=:U,npos=1.25]{\small \shortstack{\_parse\\\_options}}}
 
-     \psframe[linewidth=0.5pt,linestyle=solid,fillstyle=solid,fillcolor=white](21.6,9)(22,8.25)
+     \uncover<6->{
+     \uncover<8->{
+     \psframe[linewidth=0.5pt,linestyle=solid,fillstyle=solid,fillcolor=white](21.6,9)(22,8.25)}
      \psframe[linewidth=0.5pt,linestyle=solid,fillstyle=solid,fillcolor=white](21.8,10.5)(22.2,5.5)
      \rput(11.2,10.5){\rnode{nwo2new}{}} % new_with_options -> new
      \rput(21.8,10.5){\rnode{newS}{}} % new_Start
      \rput(21.8,5.5){\rnode{newE}{}} % new_End
      \rput(11.2,5.5){\rnode{nwoC}{}} % new_with_options Continue
-     \ncline[linewidth=0.5pt,linestyle=solid]{->}{nwo2new}{newS}\naput*[Ynodesep=0.5]{\small new()}
+     \ncline[linewidth=0.5pt,linestyle=solid]{->}{nwo2new}{newS}\naput*[Ynodesep=0.5]{\small new()}}
 
+     \uncover<7->{
      \psframe[linewidth=0.5pt,linestyle=solid,fillstyle=solid,fillcolor=white](15.8,9.5)(16.2,6)
      \rput(21.8,9.5){\rnode{new2blda}{}} % new -> BUILDARGS
      \rput(16.2,9.5){\rnode{aBS}{}} % around BUILDARGS => Start
      \rput(16.2,6){\rnode{aBE}{}} % around BUILDARGS => End
      \rput(21.8,6){\rnode{newC}{}} % new Continue
-     \ncline[linewidth=0.5pt,linestyle=solid]{->}{new2blda}{aBS}\nbput*[Ynodesep=0.5]{\small BUILDARGS()}
+     \ncline[linewidth=0.5pt,linestyle=solid]{->}{new2blda}{aBS}\nbput*[Ynodesep=0.5]{\small BUILDARGS()}}
 
+     \uncover<8->{
      \rput(16.2,8.75){\rnode{baC}{}} % BUILDARGS Call
      \rput(21.6,8.75){\rnode{baS}{}} % BUILDARGS Start
      \ncline[linewidth=0.5pt,linestyle=solid]{->}{baC}{baS}\naput*[Ynodesep=0.5]{\small super-\textgreater{}BUILDARGS()}
      \rput(21.6,8.5){\rnode{baE}{}} % BUILDARGS Start
      \rput(16.2,8.5){\rnode{aBC}{}} % around BUILDARGS => Continue
-     \ncline[linewidth=0.5pt,linestyle=solid]{->}{baE}{aBC}
+     \ncline[linewidth=0.5pt,linestyle=solid]{->}{baE}{aBC}}
 
+     \uncover<9->{
      \rput(16.2,8){\rnode{blcS}{}} % _build_loaded_config Start
      \rput(16.2,6.5){\rnode{blcE}{}} % _build_loaded_config End
      \ncEVW[linewidth=0.5pt,linestyle=solid]{blcE}{blcS}
      \ncputicon[npos=0]{umlV}
      \nbput*[nrot=:U,npos=1.25]{\small \shortstack{\_build\_loaded\\\_config}}
-     \ncline[linewidth=0.5pt,linestyle=solid]{->}{aBE}{newC} % around BUILDARGS => End -> new Continue
-     \ncline[linewidth=0.5pt,linestyle=solid]{->}{newE}{nwoC} % new End -> new_with_options Continue
+     \ncline[linewidth=0.5pt,linestyle=solid]{->}{aBE}{newC}} % around BUILDARGS => End -> new Continue
+     \uncover<10->{
+     \ncline[linewidth=0.5pt,linestyle=solid]{->}{newE}{nwoC}} % new End -> new_with_options Continue
 
+     \uncover<11->{
      \rput(11.2,5.25){\rnode{hoeS}{}}
      \rput(11.2,3.75){\rnode{hoeE}{}}
      \ncEVW[linewidth=0.5pt,linestyle=solid]{hoeE}{hoeS}
      \ncputicon[npos=0]{umlV}
      \nbput*[nrot=:U,npos=1.25]{\small \shortstack{help on\\exception}}
 
-     \ncline[linewidth=0.5pt,linestyle=solid]{->}{nwoE}{nwcC} % new_with_options_End -> new_with_cmd Continue
+     \ncline[linewidth=0.5pt,linestyle=solid]{->}{nwoE}{nwcC}} % new_with_options_End -> new_with_cmd Continue
 
+     \uncover<12->{
      \rput(6.2,3.25){\rnode{eS}{}} % execute Start
      \rput(6.2,1.75){\rnode{eE}{}} % execute End
      \ncEVW[linewidth=0.5pt,linestyle=solid]{eE}{eS}
      \ncputicon[npos=0]{umlV}
-     \nbput*[nrot=:U,npos=1.25]{\small execute}
+     \nbput*[nrot=:U,npos=1.25]{\small execute}}
 
-     \ncline[linewidth=0.5pt,linestyle=solid]{->}{nwcE}{mainC}
+     \uncover<2->{\ncline[linewidth=0.5pt,linestyle=solid]{->}{nwcE}{mainC}}
      %
      %
-     \small\ttfamily% Functions
-     \psset{labelsep=1.5mm}
+     %\small\ttfamily% Functions
+     %\psset{labelsep=1.5mm}
      %\ncbox*[linecolor=lightgray]{->}{2,2}{3,2}
      %\ncline[linewidth=0.5pt,linestyle=solid]{->}{2,1}{2,2}\naput*[Ynodesep=0.5]{\small new\_with\_cmd()}
      %\ncbar[linewidth=0.5pt,linestyle=solid,linecolor=red,angle=90,arrows=->]{bcc}{bccE}%\naput*[Ynodesep=0.25]{\_build\_command\_commands()}
