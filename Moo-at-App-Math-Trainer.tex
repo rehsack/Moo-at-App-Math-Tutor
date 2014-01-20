@@ -161,7 +161,9 @@ has denom(*@\pnode(0,0){C}{}@*)inator => ( is => "(*@\pnode(0,0){E}{}@*)ro", req
 \uncover<6->{\item[required] when set to a true value, attribute must be passed on instantiation}
 \uncover<7->{\item[isa] defines a subroutine (\texttt{coderef}) which is called to validate values to set}
 \uncover<8->{\item[coerce] defines a subrouting (\texttt{coderef}) which forces attribute values}
-\uncover<9->{\item[handles] defines a \textbf{role} or methods to dispatch to the attribute}
+\uncover<9->{\item[trigger] takes a subroutine (\texttt{coderef}) which called anytime the attribute is set \\
+    \uncover<10->{\textbf{special}: the value of $ 1 $ means to generate a (\texttt{coderef}) which calles the method \texttt{\_trigger\_\$\{attr\_name\}} (This is called \textit{attribute shortcut})}}
+\uncover<11->{\item[handles] defines a \textbf{role} or methods to dispatch to the attribute}
 \end{description}
 \end{block}
 
@@ -170,28 +172,13 @@ has denom(*@\pnode(0,0){C}{}@*)inator => ( is => "(*@\pnode(0,0){E}{}@*)ro", req
 \begin{frame}[t,fragile]
 
 \begin{block}<1->{Attribute options II}
-\begin{description}
-\item[trigger] takes a subroutine (\texttt{coderef}) which called anytime the attribute is set \\
-    \uncover<2->{\textbf{special}: the value of $ 1 $ means to generate a (\texttt{coderef}) which calles the method \texttt{\_trigger\_\$\{attr\_name\}} (This is called \textit{attribute shortcut})}
-\uncover<3->{\item[default] subroutine (\texttt{coderef}) which is called to initialize an attribute}
-\uncover<4->{\item[predicate] takes a method name (\texttt{string}) which will return true if an attribute has a value (supports \textit{attribute shortcut})}
-\uncover<5->{\item[builder] takes a method name (\texttt{string}) which is called to initialize an attribute (supports \textit{attribute shortcut})}
-\uncover<6->{\item[clearer] takes a method name (\texttt{string}) which will clear the attribute (supports \textit{attribute shortcut})}
-\uncover<7->{\item[lazy] takes a bool value which delays attribute initialization to first time it's grabbed when \texttt{true}}
-\end{description}
-\end{block}
-
-\end{frame}
-
-\begin{frame}[t,fragile]
-
-\begin{block}<1->{Attribute options III}
-\begin{description}
-\item[reader] takes a method name for another than default getter name (\texttt{\_get\_\$\{attr\_name\}} instead of \texttt{\$\{attr\_name\}} to get some Java smell)
-\uncover<2->{\item[writer]  takes a method name for another than default setter name (\texttt{\_set\_\$\{attr\_name\}} instead of \texttt{\$\{attr\_name\}} to get some C++ smell)}
-\uncover<3->{\item[weak\_ref] should be set to a true value when circular references are possible by attribute value (to avoid leaks)}
-\uncover<4->{\item[init\_arg] Takes the name of the key to look for at instantiation time of the object. A common use of this is to make an underscored attribute have a non-underscored initialization name. undef means that passing the value in on instantiation is ignored.}
-\uncover<5->{\item[moosify] Takes either a coderef or array of coderefs which is meant to transform the given attributes specifications if necessary when upgrading to a Moose role or class. You shouldn't need this by default, but is provided as a means of possible extensibility.}
+\begin{description}[style=sameline]
+\item[default] subroutine (\texttt{coderef}) which is called to initialize an attribute
+\uncover<2->{\item[builder] takes a method name (\texttt{string}) which is called to initialize an attribute (supports \textit{attribute shortcut})}
+\uncover<3->{\item[init\_arg] Takes the name of the key to look for at instantiation time of the object. A common use of this is to make an underscored attribute have a non-underscored initialization name. undef means that passing the value in on instantiation is ignored.}
+\uncover<4->{\item[reader/writer] takes a method name for another than default getter name (\texttt{\_get\_\$\{attr\_name\}} or \texttt{\_set\_\$\{attr\_name\}}, respectively --- instead of \texttt{\$\{attr\_name\}} to get some Java or C++ smell)}
+\uncover<5->{\item[clearer] takes a method name (\texttt{string}) which will clear the attribute (supports \textit{attribute shortcut})}
+\uncover<6->{\item[predicate] takes a method name (\texttt{string}) which will return true if an attribute has a value (supports \textit{attribute shortcut})}
 \end{description}
 \end{block}
 
