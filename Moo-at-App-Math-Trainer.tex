@@ -114,6 +114,82 @@ Following knowledge is expected:
 
 \part{Moo basics}
 
+\section{Modules}
+
+\subsection{Classes and Roles}
+
+\begin{frame}[t,fragile]
+
+\begin{block}<1->{Classes in Moo}
+\begin{itemize}
+\item classes can be instantiated
+\uncover<2->{\item one can inherit from classes}
+\uncover<3->{\item one can aggregate classes}
+\uncover<4->{\item distinguish naming conflicts is up to developer}
+\end{itemize}
+\end{block}
+
+\begin{block}<5->{}
+\scriptsize
+\begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
+{
+    package Natural;
+
+    use Moo;
+
+    sub _stringify { ... };
+}
+{
+    package Roman;
+
+    use Moo;
+    extends "Natural";
+
+    sub _stringify { ... };
+}
+my $natnum = Natural->new( value => 42 ); say $natnum->_stringify(); # 42
+my $romnum = Roman->new( value => 42 ); say $romnum->_stringify(); # XLII
+\end{lstlisting}
+\end{block}
+
+\end{frame}
+
+\begin{frame}[t,fragile]
+
+\begin{block}<1->{Roles in Moo}
+\begin{itemize}
+\item roles describe a dedicated behavior (eg. \texttt{printable})
+\uncover<2->{\item roles can be composed into classes}
+\uncover<3->{\item one can't inherit from roles - only consumed}
+\uncover<4->{\item roles cannot exist stand-alone}
+\uncover<5->{\item roles are consumed once}
+\uncover<6->{\item naming conflicts cause compile time error}
+\end{itemize}
+\end{block}
+
+\begin{block}<7->{}
+\scriptsize
+\begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
+{   package Printable;
+
+    use Moo::Role; # now it's a role - no is a relationship anymore
+
+    sub print { my $self = shift; say $self->_stringify }
+}
+{    package Natural;
+
+    use Moo; # class
+    with "Printable"; # consumes a role
+
+    sub _stringify { ... };
+}
+my $natnum = Natural->new( value => 42 ); $natnum->print; # 42
+my $romnum = Roman->new( value => 42 ); $romnum->print; # XLII
+\end{lstlisting}
+\end{block}
+
+\end{frame}
+
 \section{Attributes}
 
 \subsection{Attributes in Moo}
