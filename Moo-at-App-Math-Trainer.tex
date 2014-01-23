@@ -55,36 +55,6 @@
 
 \section{Introduction}
 
-\subsection{Audience}
-
-\begin{frame}[t,fragile]{Audience}
-\begin{block}<1->{Audience}
-\begin{itemize}
-\item Developer who wants to create or improve Perl5 software
-\item Developer who wants to learn how to develop modern OO with Perl5
-\item Developer who're interested in developing mathematical exercises
-\end{itemize}
-\end{block}
-
-\begin{block}<2->{Prerequisites of the Audience}
-Following knowledge is expected:
-\begin{itemize}
-\item General knowledge about object oriented programming or concepts like
-    \small
-    \begin{itemize}
-    \item classes
-    \item objects
-    \item polymorphism, inheritance and/or roles
-    \item methods, class fcuntions
-    \item attributes, properties
-    \end{itemize}
-    \normalsize
-\item slightly above basic Perl experience
-\uncover<3->{\item ever heard of Smalltalk and its OO-concept is a strong bonus}
-\end{itemize}
-\end{block}
-\end{frame}
-
 \subsection{Motivation}
 
 \begin{frame}[t,fragile]{Motivation}
@@ -95,7 +65,7 @@ Following knowledge is expected:
 \item MooX::Cmd, MooX::Options and MooX::ConfigFromFile provide way more features and flexibility than either
       \begin{itemize}
       \item App::Cmd with Getopt::Long::Descriptive
-      \item MooseX::App::Cmd along with corresponding MooseX warppers around related stuff
+      \item MooseX::App::Cmd along with corresponding MooseX wrappers around related stuff
       \end{itemize}
 \item $ 2^{nd} $ generation of modern OO in Perl5
 \end{itemize}
@@ -110,6 +80,36 @@ Following knowledge is expected:
 \end{itemize}
 \end{block}
 
+\end{frame}
+
+\subsection{Audience}
+
+\begin{frame}[t,fragile]{Audience}
+\begin{block}<1->{Audience}
+\begin{itemize}
+\item Developer who wants to create or improve Perl5 software
+\item Developer who wants to learn how to develop modern OO with Perl5
+\item Developer who interested in developing mathematical exercises
+\end{itemize}
+\end{block}
+
+\begin{block}<2->{Prerequisites of the Audience}
+Following knowledge is expected:
+\begin{itemize}
+\item General knowledge about object oriented programming or concepts like
+    \small
+    \begin{itemize}
+    \item classes
+    \item objects
+    \item polymorphism, inheritance and/or roles
+    \item methods, class functions
+    \item attributes, properties
+    \end{itemize}
+    \normalsize
+\item slightly above basic Perl experience
+\uncover<3->{\item ever heard of Smalltalk and its OO-concept is a strong bonus}
+\end{itemize}
+\end{block}
 \end{frame}
 
 \part{Moo basics}
@@ -158,9 +158,9 @@ my $romnum = Roman->new( value => 42 ); say $romnum->_stringify(); # XLII
 
 \begin{block}<1->{Roles in Moo}
 \begin{itemize}
-\item roles describe a dedicated behavior (eg. \texttt{printable})
+\item roles describe a dedicated behavior (e.g. \texttt{printable})
 \uncover<2->{\item roles can be composed into classes}
-\uncover<3->{\item one can't inherit from roles - only consumed}
+\uncover<3->{\item one can't inherit from roles - only consume}
 \uncover<4->{\item roles cannot exist stand-alone}
 \uncover<5->{\item roles are consumed once}
 \uncover<6->{\item naming conflicts cause compile time error}
@@ -172,7 +172,7 @@ my $romnum = Roman->new( value => 42 ); say $romnum->_stringify(); # XLII
 \begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
 {   package Printable;
 
-    use Moo::Role; # now it's a role - no is a relationship anymore
+    use Moo::Role; # now it's a role - no 'is a' relationship anymore
 
     sub print { my $self = shift; say $self->_stringify }
 }
@@ -236,7 +236,7 @@ has denom(*@\pnode(0,0){C}{}@*)inator => ( is => "(*@\pnode(0,0){E}{}@*)ro", req
     \end{description}
 \uncover<6->{\item[required] when set to a true value, attribute must be passed on instantiation}
 \uncover<7->{\item[isa] defines a subroutine (\texttt{coderef}) which is called to validate values to set}
-\uncover<8->{\item[coerce] defines a subrouting (\texttt{coderef}) which forces attribute values}
+\uncover<8->{\item[coerce] defines a subroutine (\texttt{coderef}) which forces attribute values}
 \uncover<9->{\item[trigger] takes a subroutine (\texttt{coderef}) which called anytime the attribute is set \\
     \uncover<10->{\textbf{special}: the value of $ 1 $ means to generate a (\texttt{coderef}) which calles the method \texttt{\_trigger\_\$\{attr\_name\}} (This is called \textit{attribute shortcut})}}
 \uncover<11->{\item[handles] defines a \textbf{role} or methods to dispatch to the attribute}
@@ -266,8 +266,8 @@ has denom(*@\pnode(0,0){C}{}@*)inator => ( is => "(*@\pnode(0,0){E}{}@*)ro", req
 
 \begin{frame}[t,fragile]
 
-\begin{columns}[t]
-\begin{column}{.8\textwidth}
+%\begin{columns}[t]
+%\begin{column}{.8\textwidth}
 \begin{block}{Methods in Moo I}
 \scriptsize
 \begin{lstlisting}[language=Perl,inputencoding=latin9,escapeinside={(*@}{@*)}]
@@ -291,17 +291,17 @@ sub _numify { $_[0]->numerator / $_[0]->denominator; }
 ...
 \end{lstlisting}
 \end{block}
-\end{column}
+%\end{column}
 
-\begin{column}{.18\textwidth}
-\uncover<2->{\begin{figure}[ht]
-\rnode{a}{\includegraphics[width=\textwidth]{getStringFromObj.eps}}
-\caption{\small{For Wendy \& Java developers - what does operator overloading mean?}}
-\end{figure}}
-\end{column}
-\end{columns}
+%\begin{column}{.18\textwidth}
+%\uncover<2->{\begin{figure}[ht]
+%\rnode{a}{\includegraphics[width=\textwidth]{getStringFromObj.eps}}
+%\caption{\small{For Wendy \& Java developers - what does operator overloading mean?}}
+%\end{figure}}
+%\end{column}
+%\end{columns}
 
-\uncover<2->{\nccurve[linecolor=red]{->}{A}{a}}
+%\uncover<2->{\nccurve[linecolor=red]{->}{A}{a}}
 \end{frame}
 
 \begin{frame}[t,fragile]
@@ -491,12 +491,12 @@ around "_guess_natural_number" => sub {
  \_build\_exercise() : exercise
  }}}
  \uncover<3->{\rput(8.5,4.5){\rnode{B}{%
-  \umlClass{App::Math::Tutor::Role::VulfracExercise}{
+  \umlClass{App::Math::Tutor::Role::VulFracExercise}{
   format\\\hline
   \\\hline
  }}}}
  \uncover<4->{\rput(3,1){\rnode{C}{%
-  \umlClass{App::Math::Tutor::Role::Vulfrac}{\hline
+  \umlClass{App::Math::Tutor::Role::VulFrac}{\hline
  \_check\_vulgar\_fraction() : bool \\
  \_guess\_vulgar\_fraction() : VulFrac \\
  get\_vulgar\_fractions() : [ VulFrac ]
@@ -528,11 +528,11 @@ around "_guess_natural_number" => sub {
   execute()
  }}}}
 \end{pspicture}
-\uncover<3->{\ncN{B}{A} % App::Math::Tutor::Cmd::VulFrac::Cmd::Add -> App::Math::Tutor::Role::VulfracExercise
+\uncover<3->{\ncN{B}{A} % App::Math::Tutor::Cmd::VulFrac::Cmd::Add -> App::Math::Tutor::Role::VulFracExercise
 \ncputicon[npos=0]{umlHerit}}
-\uncover<4->{\ncNXE{C}{B} % App::Math::Tutor::Role::VulfracExercise -> App::Math::Tutor::Role::Vulfrac
+\uncover<4->{\ncNXE{C}{B} % App::Math::Tutor::Role::VulFracExercise -> App::Math::Tutor::Role::VulFrac
 \ncputicon[npos=0]{umlHerit}}
-\uncover<5->{\ncNXW{E}{B} % App::Math::Tutor::Role::VulfracExercise -> App::Math::Tutor::Role::Exercise
+\uncover<5->{\ncNXW{E}{B} % App::Math::Tutor::Role::VulFracExercise -> App::Math::Tutor::Role::Exercise
 \ncputicon[npos=0]{umlHerit}}
 \uncover<3->{\ncSXE{D}{B}
 \ncputicon[npos=0]{umlAgreg}}
@@ -638,7 +638,7 @@ around "_guess_natural_number" => sub {
 \end{itemize}
 \end{block}
 
-\begin{block}<9->{Design futury}
+\begin{block}<9->{Design future}
 \begin{itemize}
 \item Modern Perl-OO allowes easy refactoring to apply above improvements
 \end{itemize}
@@ -881,10 +881,10 @@ package App::Math::Tutor::Role::Exercise;
 use strictures; # instead of strict + warnings
 use Moo::Role(*@\pnode(0,0){A}{}@*); use MooX::Options(*@\pnode(0,0){B}{}@*);
 
-option (*@\pnode(0,0){C}{}@*)amount => (
+option (*@\pnode(0,0){C}{}@*)quantity => (
                    is       => "ro",
-                   doc      => "Specifies amount of exercises to generate",
-                   (*@\pnode(0,0){D}{}@*)long_doc => "Specify amount of exercises to generate. "
+                   doc      => "Specifies number of exercises to generate",
+                   (*@\pnode(0,0){D}{}@*)long_doc => "Specify number of exercises to generate. "
                      . "In case of several kind of ...",
                    format  => "i",
                    short   => "n",
@@ -899,7 +899,7 @@ sub (*@\pnode(0,0){G}{}@*)_build_output_name {
 \end{block}
 
 \begin{itemize}
-\uncover<2->{\item being a \rnode{a}{role} (no \textit{is a} relationship) \uncover<3->{and add \rnode{b}{CLI options} capabilities}}
+\uncover<2->{\item being a \rnode{a}{role} (no ''\textit{is a}'' relationship) \uncover<3->{and add \rnode{b}{CLI options} capabilities}}
 \uncover<4->{\item defining an \rnode{c}{attribute} which will be initialized by command line}
 \uncover<5->{\item support MooX::Option's \rnode{d}{\texttt{--man}} usage feature}
 \uncover<6->{\item attribute for \rnode{e}{output file} to generate \uncover<7->{--- \rnode{f}{lazy} to allow provide individual \rnode{g}{name builder}}}
@@ -1206,7 +1206,7 @@ sub _build_exercises {
 \begin{block}<1->{}
 
 \footnotesize
-\begin{longtable}[l]{p{5cm}|p{5cm}}
+\begin{longtable}[l]{p{5.5cm}|p{5.5cm}}
 \toprule
 Vulgar Fraction Addition & Vulgar Fraction Subtraction \\
 \midrule
@@ -1242,7 +1242,7 @@ $ \frac{72}{68} + \frac{46}{99} = $ & $ \frac{42}{49} - \frac{38}{59} = $ \\
 \begin{block}<1->{}
 
 \footnotesize
-\begin{longtable}[l]{p{5cm}|p{5cm}}
+\begin{longtable}[l]{p{5.5cm}|p{5.5cm}}
 \toprule
 Vulgar Fraction Addition & Vulgar Fraction Subtraction \\
 \midrule
